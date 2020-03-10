@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Assessment</title>
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css">
+    <script src="https://unpkg.com/swiper/js/swiper.js"></script>
+    <script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+
+<body>
+    <header class="status_message_wrapper">
+        <div class="status_message">Welcome To Module Manager</div>
+    </header>
+    <div class="container">
+        <section class="active_display">
+            <!--Module section-->
+            <div class="module_selection_section">
+                <div class="action_tray">
+                    <div class="edit_icon">Edit</div>
+                    <div class="delete_icon">Delete</div>
+                </div>
+
+                <div class="module_section">
+                    <div class="edit_delete_checkbox">
+                        <div class="checkbox"> <input type="checkbox" /> </div>
+                        <div class="checkbox"> <input type="checkbox" /> </div>
+                        <div class="checkbox"> <input type="checkbox" /></div>
+                        <div class="checkbox"> <input type="checkbox" /> </div>
+                        <div class="checkbox"><input type="checkbox" /> </div>
+                        <div class="checkbox"> <input type="checkbox" /></div>
+                    </div>
+
+                    <div class="module_selection">
+                        <div class="module_name"> <span> Programming</span></div>
+                        <div class="module_name"> <span>fdsfds</span></div>
+                        <div class="module_name"><span>fdsfds</span></div>
+                        <div class="module_name"><span>fdsfds</span></div>
+                        <div class="module_name"><span>fdsfd</span></div>
+                        <div class="module_name"><span>fdsfds</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!--View Tasks Section-->
+            <div style="display: none;" class="view_tasks_section">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="sliding_section swiper-slide">
+                            <div class="task_wrapper">
+                                <div class="top_task_section">
+                                    <div class="task_name_wrap">
+                                        fds
+                                    </div>
+
+                                    <div class="priority_indicator">
+                                        fds
+                                    </div>
+                                </div>
+
+                                <div class="middle_task_section">
+                                    <p class="countdown_timer"></p>
+                                </div>
+
+                                <div class="bottom_task_section">
+                                    <p class="task_description">
+
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="sliding_section swiper-slide">
+                            <div class="task_wrapper">
+                                <div class="top_task_section">
+                                    <div class="task_name_wrap">
+                                        fds
+                                    </div>
+
+                                    <div class="priority_indicator">
+                                        csacasas
+                                    </div>
+                                </div>
+
+                                <div class="middle_task_section">
+                                    <p class="countdown_timer"></p>
+                                </div>
+
+                                <div class="bottom_task_section">
+                                    <p class="task_description">
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-scrollbar">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Add/Edit Task Section-->
+            <div style="display: none;" class="full_overlay_container">
+                <div class="cancel_navigation_section">
+                    <div><button>Cancel</button></div>
+                </div>
+
+
+                <div class="edit_task_section">
+                    <div class="task_name_wrapper">
+                        <p>Task name</p>
+                        <input type="text" />
+                    </div>
+
+                    <div class="task_desc_wrapper">
+                        <p>Task Description</p>
+                        <textarea></textarea>
+                    </div>
+
+                    <div class="task_priority_wrapper">
+                        <p>Task priority</p>
+                        <select></select>
+                    </div>
+
+                    <div class="task_deadline_wrapper">
+                        <p>Deadline</p>
+                        <input class="datepicker" type="datetime-local" />
+                    </div>
+                </div>
+
+
+                <div class="footer_bottom">
+                    <div class="done_button_wrapper">
+                        <button class="done">Done</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <!--Module Section-->
+            <div class="save_section active_footer">
+                <button disabled="true">Done</button>
+            </div>
+            <!--View Tasks section-->
+            <div style=" display: none;" class="add_item_wrapper">
+                <button class="add_icon">Add</button>
+            </div>
+
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>

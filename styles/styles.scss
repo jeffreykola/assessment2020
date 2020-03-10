@@ -1,0 +1,194 @@
+html,
+body {
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+@mixin showDivs() {
+    div {
+        border: 1px solid red;
+    }
+}
+
+@mixin putToRight() {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+}
+
+//HEADER
+header {
+    padding: 1em;
+    div {
+        height: -webkit-fit-content;
+        height: -moz-fit-content;
+        height: fit-content;
+    }
+}
+
+//CONTAINER
+#container {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.active_display {
+    //MODULE SELECTION
+    .module_selection_section {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 0.1fr 0.9fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        padding: 1em;
+        .action_tray {
+            display: -webkit-box;
+            display: flex;
+            -webkit-box-pack: end;
+            justify-content: flex-end;
+            div {
+                height: -webkit-fit-content;
+                height: -moz-fit-content;
+                height: fit-content;
+                width: -webkit-fit-content;
+                width: -moz-fit-content;
+                width: fit-content;
+            }
+            margin-bottom: 1em;
+        }
+        .module_section {
+            display: grid;
+            grid-template-columns: 0.1fr 1fr;
+            grid-template-rows: 1fr;
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+        }
+        .edit_delete_checkbox {
+            grid-area: 1 / 1 / 2 / 2;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(6, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            div {
+                padding: 2em;
+            }
+        }
+        .module_selection {
+            grid-area: 1 / 2 / 2 / 3;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(6, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            div {
+                padding: 2em;
+            }
+        }
+    }
+}
+
+//VIEW TASKS
+.task_wrapper {
+    margin: 2em;
+    margin-top: 10em;
+    padding: 1em;
+    height: 50vh;
+    width: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5fr repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0.5em;
+    .top_task_section {
+        display: grid;
+        grid-template-columns: 1fr 0.1fr;
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        .task_name_wrap {
+            div {
+                height: -webkit-fit-content;
+                height: -moz-fit-content;
+                height: fit-content;
+                width: -webkit-fit-content;
+                width: -moz-fit-content;
+                width: fit-content;
+            }
+        }
+    }
+    .middle_task_section {
+        display: -webkit-box;
+        display: flex;
+    }
+    .bottom_task_section {
+        div {
+            height: auto;
+            width: auto;
+        }
+    }
+}
+
+//FULL SCREEN OVERLAY
+.full_overlay_container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.1fr 1fr 0.1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 1em;
+    height: 100vh;
+    width: auto;
+    .cancel_navigation_section {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .edit_task_section {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        height: auto;
+        margin: 1em;
+        div {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 0.2fr 1fr;
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+        }
+    }
+    div {
+        height: fit-content;
+    }
+    .footer_bottom {
+        @include putToRight();
+        padding-right: 1em;
+    }
+}
+
+//FOOTER CSS
+.active_footer {
+    padding: 1em;
+    position: relative;
+}
+
+footer {
+    .save_section {
+        display: -webkit-box;
+        display: flex;
+        position: relative;
+        -webkit-box-pack: end;
+        justify-content: flex-end;
+    }
+    .add_item_wrapper {
+        margin-right: 1em;
+        @include putToRight();
+    }
+}

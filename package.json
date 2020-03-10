@@ -1,0 +1,23 @@
+{
+  "name": "module_manager",
+  "version": "1.0.0",
+  "description": "Manages tasks within modules",
+  "main": "index.js",
+  "scripts": {
+    "css": "node-sass styles/styles.scss -o styles",
+    "css:watch": "npm run css && node-sass styles/styles.scss -wo styles"
+  },
+  "devDependencies": {
+    "node-sass": "^3.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jeffrey2000/assessment2020.git"
+  },
+  "author": "Jeffrey Kola-Abodunde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jeffrey2000/assessment2020/issues"
+  },
+  "homepage": "https://github.com/Jeffrey2000/assessment2020#readme"
+}
