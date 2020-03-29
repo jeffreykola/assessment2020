@@ -6,24 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Programming Assessment</title>
     <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/styles.css">
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" type="text/css" href="styles/styles.css"/>
+
     <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css">
     <script src="https://unpkg.com/swiper/js/swiper.js"></script>
     <script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </head>
 
 <body>
-    <header class="status_message_wrapper">
+    <header style="display: none;" class="status_message_wrapper">
         <div class="status_message"> <b>MODULE</b> MANAGER</div>
     </header>
     <div class="container">
         <section class="active_display">
             <!--Module section-->
-            <div class="module_selection_section">
+            <div style="display: none;" class="module_selection_section">
                 <div class="action_tray">
                     <div class="edit_icon"><img id="edit" src="./assets/icons/edit.svg" />
                     </div>
@@ -111,26 +113,33 @@
                 </div>
             </div>
             <!--Add/Edit Task Section-->
-            <div style="display: none;" class="full_overlay_container">
+            <div class="full_overlay_container">
                 <div class="cancel_navigation_section">
-                    <div><button>Cancel</button></div>
+                    <div class="status_updates_wrapper">
+                        <p class="status_message"></p>
+                    </div>
+                    <img src="./assets/icons/close.svg" />
                 </div>
 
-
+                
                 <div class="edit_task_section">
                     <div class="task_name_wrapper">
                         <p>Task name</p>
-                        <input type="text" />
+                        <input id="task_name" type="text" />
                     </div>
 
                     <div class="task_desc_wrapper">
                         <p>Task Description</p>
-                        <textarea></textarea>
+                        <textarea class="task_desc_inp"></textarea>
                     </div>
 
                     <div class="task_priority_wrapper">
                         <p>Task priority</p>
-                        <select></select>
+                        <select class="task_priority">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
                     </div>
 
                     <div class="task_deadline_wrapper">
@@ -141,19 +150,19 @@
 
 
                 <div class="footer_bottom">
-                    <div class="done_button_wrapper">
-                        <button class="done">Done</button>
+                    <div class="done_button_wrapper save_task">
+                        <button class="done">Save Task</button>
                     </div>
                 </div>
             </div>
         </section>
         <footer>
             <!--Module Section-->
-            <div class="save_section active_footer">
+            <div style="display: none;" class="save_section active_footer">
                 <button class="save_button">Done</button>
             </div>
             <!--View Tasks section-->
-            <div style=" display: none;" class="add_item_wrapper">
+            <div style="display: none" class="add_item_wrapper">
                 <button class="add_icon">Add</button>
             </div>
 
@@ -162,6 +171,7 @@
     </div>
 
     <script type="text/javascript" src="index.js"></script>
+
 </body>
 
 </html>

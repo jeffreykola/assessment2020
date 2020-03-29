@@ -21,6 +21,15 @@
         justify-content: flex-end;
     }
     
+    @mixin buttonDesign() {
+        padding: 0.5em;
+        background: white;
+        border: none;
+        font-size: 16px;
+        border: 1px solid black;
+        color: black;
+    }
+    
     //HEADER
     header {
         padding: 1em;
@@ -113,6 +122,7 @@
         grid-template-rows: 0.5fr repeat(2, 1fr);
         grid-column-gap: 0px;
         grid-row-gap: 0.5em;
+        @include showDivs();
         .top_task_section {
             display: grid;
             grid-template-columns: 1fr 0.1fr;
@@ -140,41 +150,71 @@
                 }
             }
         }
-        //FULL SCREEN OVERLAY
-        .full_overlay_container {
+    }
+    
+    //FULL SCREEN OVERLAY
+    .full_overlay_container {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 0.1fr 1fr 0.1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 1em;
+        height: 100vh;
+        width: auto;
+        .cancel_navigation_section {
             display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: 0.1fr 1fr 0.1fr;
+            grid-template-columns: 1fr 0.1fr;
+            grid-template-rows: 1fr;
             grid-column-gap: 0px;
-            grid-row-gap: 1em;
-            height: 100vh;
-            width: auto;
-            .cancel_navigation_section {
-                display: flex;
-                justify-content: flex-end;
+            grid-row-gap: 0px;
+            img {
+                padding: 1em;
+                height: 1em;
+                width: 1em;
             }
-            .edit_task_section {
-                display: grid;
-                grid-template-columns: 1fr;
-                grid-template-rows: repeat(4, 1fr);
-                grid-column-gap: 0px;
-                grid-row-gap: 0px;
-                height: auto;
-                margin: 1em;
-                div {
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    grid-template-rows: 0.2fr 1fr;
-                    grid-column-gap: 0px;
-                    grid-row-gap: 0px;
+            .status_updates_wrapper {
+                .status_message {
+                    padding-left: 1em;
+                    font-size: 14px;
+                    color:red;
                 }
             }
+        }
+        .edit_task_section {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(4, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            height: auto;
+            margin: 1em;
             div {
-                height: fit-content;
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: 0.2fr 1fr;
+                grid-column-gap: 0px;
+                grid-row-gap: 0px;
             }
-            .footer_bottom {
-                @include putToRight();
-                padding-right: 1em;
+            textarea,
+            input {
+                font-family: 'Inter', sans-serif;
+                font-size: 16px;
+                padding-top: 0px;
+                padding-left: 0px;
+                margin: 0px;
+                line-height: 1em;
+            }
+        }
+        div {
+            height: fit-content;
+        }
+        .footer_bottom {
+            @include putToRight();
+            padding-right: 1em;
+            .done_button_wrapper {
+                button {
+                    @include buttonDesign();
+                }
             }
         }
     }
@@ -196,12 +236,7 @@
             position: relative;
             -webkit-box-pack: end;
             button {
-                padding: 0.5em;
-                background: white;
-                border: none;
-                font-size: 16px;
-                border: 1px solid black;
-                color: black;
+                @include buttonDesign();
             }
         }
         .add_item_wrapper {
