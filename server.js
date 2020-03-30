@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 const database = new Datastore('taskDatabase.db');
 database.loadDatabase();
 
+var numberOfTasks = 0;
 //POST route for adding a task
 app.post('/', (req,res)=>{
     const data = req.body;
@@ -28,13 +29,14 @@ app.post('/', (req,res)=>{
 
 //GET route for getting all the tasks
 
-app.get('/', (req, res)=> {  
+app.get('/data', (req, res)=> {  
     database.find({}, (error, data)=>{ 
         if (error){
             res.json({'code': 600});
             res.end();
         }
-        res.json(data);
+        console.log(data);
+        res.send(JSON.stringify(data));
     });
 });
 
