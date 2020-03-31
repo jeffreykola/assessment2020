@@ -113,7 +113,13 @@ header {
       grid-column-gap: 0px;
       grid-row-gap: 0px;
       div {
-        padding: 2em;
+
+        button{
+            background: white;
+            border:1px solid black;
+            padding:1.5em;
+            font-size: 14px;
+        }
       }
     }
   }
@@ -196,17 +202,21 @@ header {
     grid-template-rows: 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    img {
-      padding: 1em;
-      height: 1em;
-      width: 1em;
-    }
+    
     .status_updates_wrapper {
       .status_message {
         padding-left: 1em;
         font-size: 14px;
         color: red;
       }
+
+    }
+
+    button{
+      //background: red;
+      @include buttonDesign();
+      width: auto;
+      height: auto;      
     }
   }
   .edit_task_section {

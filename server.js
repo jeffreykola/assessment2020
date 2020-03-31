@@ -15,13 +15,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-const database = new Datastore('taskDatabase.db');
-database.loadDatabase();
 
-var numberOfTasks = 0;
 //POST route for adding a task
-app.post('/', (req,res)=>{
+app.post('/', function(req,res){
     const data = req.body;
+    var database = new Datastore(`${req.body.module}_tasks.db`);
+    database.loadDatabase();
     database.insert(data);
     res.sendStatus(200);
     console.log(`Added a task to the database`);
@@ -29,7 +28,11 @@ app.post('/', (req,res)=>{
 
 //GET route for getting all the tasks
 
-app.get('/data', (req, res)=> {  
+app.get(`/data`, function(req,res){
+    console.log("received");
+    console.log(`${req.query.id}_tasks.db`)
+    var database = new Datastore(`${req.query.id}_tasks.db`);
+    database.loadDatabase();
     database.find({}, (error, data)=>{ 
         if (error){
             res.json({'code': 600});

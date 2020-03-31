@@ -65,8 +65,11 @@ header {
     grid-template-rows: repeat(6, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px; }
-    .active_display .module_selection_section .module_selection div {
-      padding: 2em; }
+    .active_display .module_selection_section .module_selection div button {
+      background: white;
+      border: 1px solid black;
+      padding: 1.5em;
+      font-size: 14px; }
 
 .view_tasks_section {
   display: grid;
@@ -130,14 +133,19 @@ header {
     grid-template-rows: 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px; }
-    .full_overlay_container .cancel_navigation_section img {
-      padding: 1em;
-      height: 1em;
-      width: 1em; }
     .full_overlay_container .cancel_navigation_section .status_updates_wrapper .status_message {
       padding-left: 1em;
       font-size: 14px;
       color: red; }
+    .full_overlay_container .cancel_navigation_section button {
+      padding: 0.5em;
+      background: white;
+      border: none;
+      font-size: 16px;
+      border: 1px solid black;
+      color: black;
+      width: auto;
+      height: auto; }
   .full_overlay_container .edit_task_section {
     display: grid;
     grid-template-columns: 1fr;

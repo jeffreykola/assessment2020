@@ -22,8 +22,6 @@ $(document).ready(function() {
 
   $(".datepicker").flatpickr(defaultState);
 
-
-
   //State management
 
   let checked = new Set();
@@ -58,132 +56,153 @@ $(document).ready(function() {
     }
   });
 
-  $(".save_button").click(function() {
-    if (editDisabled && checkboxesEnabled && checkedBoxes.length > 0) {
-      $("input:checkbox").removeAttr("disabled");
-      $("#edit").css({ "pointer-events": "none" });
+  $(".module_name button").click(function() {
+    var name = $(this).text().trim();
+    $(".module_selection_section, .full_screen_overlay, header, .save_section").css({
+      display: "none"
+    });
+    $(".view_tasks_section, .add_item_wrapper").removeAttr('style');
 
-      $(".subject-1:input").click(() => {
-        alert("Hello");
+    $('.add_item_wrapper button').click(function(){
+      $('.full_overlay_container').show();
+      $('.view_tasks_section, .add_item_wrapper').css({'display':'none'});
+      $('.full_overlay_container').css({'z-index':99999});
+
+      $('.close_button').click(function(){
+        $('.full_overlay_container').css({'display':'none'});
+        $('.view_tasks_section, .add_item_wrapper').removeAttr('style');
       });
-      for (let i = 0; i < checkedBoxes.length; i++) {
-        const currentValue = $("." + checkedBoxes[i] + "_input").val();
-        console.log(currentValue);
-        $("." + checkedBoxes[i]).html("<span>" + currentValue + "</span>");
-      }
-    }
-  });
+    });
 
-  //Save task button
-  $(".save_task").click(function() {
-    //Clearing all values in input
-    const Task = {
-      taskName: $("#task_name").val(),
-      descripition: $(".task_desc_inp").val(),
-      priority: $(".task_priority").val(),
-      date: $(".datepicker").val()
-    };
+    updateTasks(name);
+    $('.save_button').addClass(name);
+    
+    $(".save_button").click(function() {
+      if (editDisabled && checkboxesEnabled && checkedBoxes.length > 0) {
+        $("input:checkbox").removeAttr("disabled");
+        $("#edit").css({ "pointer-events": "none" });
 
-    if (Object.values(Task).includes("")) {
-      $(".status_message").html(
-        `Enter information into all required fields : <ul class="required_fields"></ul>`
-      );
-      for (let i = 0; i <= 4; i++) {
-        if (Object.values(Task)[i] == "") {
-          const niceDisplay = {
-            taskName: "Task Name",
-            descripition: "Task Description",
-            priority: "Task Priority",
-            date: "Deadline "
-          };
-
-          $(".required_fields").append(
-            `<li>${niceDisplay[Object.keys(Task)[i]]}</li>`
-          );
+        $(".subject-1:input").click(() => {
+          alert("Hello");
+        });
+        for (let i = 0; i < checkedBoxes.length; i++) {
+          const currentValue = $("." + checkedBoxes[i] + "_input").val();
+          console.log(currentValue);
+          $("." + checkedBoxes[i]).html("<span>" + currentValue + "</span>");
         }
       }
-    } else {
-      $("#task_name, .task_desc_inp, .datepicker").val("");
-      $(".datepicker").flatpickr(defaultState);
+    });
 
-      //Updating the status message
-
-      //Create json object
-      const taskJSONObject = JSON.stringify(Task);
-      console.log(taskJSONObject);
-      const postOptions = {
-        method: "POST",
-        body: taskJSONObject,
-        dataType: "json",
-        headers: {
-          Accept: "application/json;charset=utf-8",
-          "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest"
-        }
+    //Save task button
+    $(".save_task").click(function() {
+      console.log(name);
+      const Task = {
+        taskName: $("#task_name").val(),
+        descripition: $(".task_desc_inp").val(),
+        priority: $(".task_priority").val(),
+        date: $(".datepicker").val(),
+        module: name
       };
 
-      fetch("/", postOptions)
-        .then(res => {
-          if (res.status == "200") {
-            $(".status_message").html(
-              `You just added a task called: <b>${Task.taskName}</b>`
+      if (Object.values(Task).includes("")) {
+        $(".status_message").html(
+          `Enter information into all required fields : <ul class="required_fields"></ul>`
+        );
+        for (let i = 0; i <= 4; i++) {
+          if (Object.values(Task)[i] == "") {
+            const niceDisplay = {
+              taskName: "Task Name",
+              descripition: "Task Description",
+              priority: "Task Priority",
+              date: "Deadline "
+            };
+
+            $(".required_fields").append(
+              `<li>${niceDisplay[Object.keys(Task)[i]]}</li>`
             );
-          } else if (res.status == "404") {
-            $(".status_message").html(`Not Found Error: Please Try Again`);
           }
-        })
-        .catch(console.error);
-    }
-  });
+        }
+      } else {
+        $("#task_name, .task_desc_inp, .datepicker").val("");
+        $(".datepicker").flatpickr(defaultState);
 
-  //Refresh GET requests
-  const htmlTaskTemplate = (object)=>{
-    let backgroundColor = "none";
-    switch(object.priority){
+        //Updating the status message
+
+        //Create json object
+        const taskJSONObject = JSON.stringify(Task);
+        console.log(taskJSONObject);
+        const postOptions = {
+          method: "POST",
+          body: taskJSONObject,
+          dataType: "json",
+          headers: {
+            Accept: "application/json;charset=utf-8",
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest"
+          }
+        };
+
+        fetch("/", postOptions)
+          .then(res => {
+            if (res.status == "200") {
+              $(".status_message").html(
+                `You just added a task called: <b>${Task.taskName}</b>`
+              );
+            } else if (res.status == "404") {
+              $(".status_message").html(`Not Found Error: Please Try Again`);
+            }
+          })
+          .catch(console.error);
+      }
+    });
+
+    //Refresh GET requests
+    const htmlTaskTemplate = object => {
+      let backgroundColor = "none";
+      switch (object.priority) {
         case "high":
-            backgroundColor="red";
-            break;
+          backgroundColor = "red";
+          break;
         case "medium":
-            backgroundColor="orange";
-            break;
+          backgroundColor = "orange";
+          break;
         case "low":
-            backgroundColor="green";
-            break;
+          backgroundColor = "green";
+          break;
         default:
-            console.log("There has been an error");            
-    }
+          console.log("There has been an error");
+      }
 
-// Set the date we're counting down to
-var countDownDate = new Date(object.date).getTime();
+      // Set the date we're counting down to
+      var countDownDate = new Date(object.date).getTime();
 
-// Update the count down every 1 second
-var days=
-    hours =
-    minutes =
-    seconds = 0;
+      // Update the count down every 1 second
+      var days = (hours = minutes = seconds = 0);
 
-var x = setInterval(function() {
+      var x = setInterval(function() {
+        // Get today's date and time
+        var now = new Date().getTime();
 
-  // Get today's date and time
-  var now = new Date().getTime();
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
 
-    
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
-    
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  $(`.countdown_timer_${object._id}`).html(`${days} : ${hours} : ${minutes} : ${seconds}`);
+        $(`.countdown_timer_${object._id}`).html(
+          `${days} : ${hours} : ${minutes} : ${seconds}`
+        );
 
-  if (distance < 0) {
-    clearInterval(x);
-    $('.countdown_timer').html("EXPIRED");
-  }
-}, 1000);
+        if (distance < 0) {
+          clearInterval(x);
+          $(`.countdown_timer_${object.id}`).html("EXPIRED");
+        }
+      }, 1000);
 
       return `
   <div class="sliding_section swiper-slide">
@@ -209,11 +228,12 @@ var x = setInterval(function() {
       </div>
   </div>
 
-</div>`
-};
-var displayMap = new Map();
-    async function updateTasks() {
-      const response = await fetch("/data", {
+</div>`;
+    };
+
+    var displayMap = new Map();
+    async function updateTasks(name) {
+      const response = await fetch(`/data?id=${name}`, {
         headers: {
           Accept: "application/json;charset=utf-8",
           "Content-Type": "application/json"
@@ -223,23 +243,21 @@ var displayMap = new Map();
       });
       const data = await response.json();
 
-
-      for(let i =0; i < data.length; i++){
-          if(!displayMap.has([data[i]["_id"]])){
-            //$(htmlTaskTemplate(data[i])).insertBefore($('.swiper-scrollbar'));
-            mySwiper.appendSlide(htmlTaskTemplate(data[i]));
-              displayMap.set(data[i]["_id"], "displayed");
-          }else{
-              return;
-          }
+      for (let i = 0; i < data.length; i++) {
+        if (!displayMap.has([data[i]["_id"]])) {
+          //$(htmlTaskTemplate(data[i])).insertBefore($('.swiper-scrollbar'));
+          mySwiper.appendSlide(htmlTaskTemplate(data[i]));
+          displayMap.set(data[i]["_id"], "displayed");
+        } else {
+          return;
+        }
       }
 
       console.log(displayMap);
-
     }
 
-    
-    updateTasks();
+    //post REQUEST depending on the button which is cliked
 
- 
+    //VIEW TASK SECTION SHOW
+  });
 });
