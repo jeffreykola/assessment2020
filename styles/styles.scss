@@ -175,6 +175,9 @@ header {
       .middle_task_section {
         display: -webkit-box;
         display: flex;
+        //Text needs to be centrally aligned
+        text-align: center !important;
+        font-size:32px;
       }
       .bottom_task_section {
         div {
@@ -283,23 +286,27 @@ footer {
     }
   }
   .add_item_wrapper {
-    margin-right: 1em;
-    @include putToRight();
+    display: flex;
+    justify-content: space-around;
     button {
       width: auto;
       height: auto;
       background: white;
-      border: 1px solid black;
-      img {
-        height: 1em;
-        width: 1em;
+      border:none;
+      img{
         padding: 1em;
+      }
+    }
+
+    .back_button{
+      border:none;
+      img{
+        height: 3em;
+        width: 3em;
+        border:none;
+        padding:none;
       }
     }
   }
 }
 
-.add_item_wrapper {
-  margin-right: 1em;
-  @include putToRight();
-}

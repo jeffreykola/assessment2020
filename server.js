@@ -45,4 +45,3 @@ app.get(`/data`, function(req,res){
 
 app.listen(3000);
 
-

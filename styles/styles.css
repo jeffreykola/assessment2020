@@ -114,7 +114,9 @@ header {
           width: fit-content; }
       .view_tasks_section .swiper-wrapper .task_wrapper .middle_task_section {
         display: -webkit-box;
-        display: flex; }
+        display: flex;
+        text-align: center !important;
+        font-size: 32px; }
       .view_tasks_section .swiper-wrapper .task_wrapper .bottom_task_section div {
         height: auto;
         width: auto; }
@@ -210,24 +212,19 @@ footer {
       border: 1px solid black;
       color: black; }
   footer .add_item_wrapper {
-    margin-right: 1em;
-    display: -webkit-box;
     display: flex;
-    -webkit-box-pack: end;
-    justify-content: flex-end; }
+    justify-content: space-around; }
     footer .add_item_wrapper button {
       width: auto;
       height: auto;
       background: white;
-      border: 1px solid black; }
+      border: none; }
       footer .add_item_wrapper button img {
-        height: 1em;
-        width: 1em;
         padding: 1em; }
-
-.add_item_wrapper {
-  margin-right: 1em;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-pack: end;
-  justify-content: flex-end; }
+    footer .add_item_wrapper .back_button {
+      border: none; }
+      footer .add_item_wrapper .back_button img {
+        height: 3em;
+        width: 3em;
+        border: none;
+        padding: none; }

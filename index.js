@@ -54,16 +54,36 @@ $(document).ready(function() {
       $("input:checkbox").attr("disabled", "true");
       $("#edit").css({ "pointer-events": "none" });
     }
+
+    $(".save_button").click(function() {
+      if (editDisabled && checkboxesEnabled && checkedBoxes.length > 0) {
+        $("input:checkbox").removeAttr("disabled");
+        //$("#edit").css({ "pointer-events": "unset" });
+        //NEED TO FIX THIS
+
+        $(".subject-1:input").click(() => {
+          alert("Hello");
+        });
+        for (let i = 0; i < checkedBoxes.length; i++) {
+          const currentValue = $("." + checkedBoxes[i] + "_input").val();
+          console.log(checkedBoxes[i]);
+          $("." + checkedBoxes[i]).html("<span>" + currentValue + "</span>");
+        }
+      }
+    });
+
   });
 
   $(".module_name button").click(function() {
+    //HANDLING THE SHOWING OF DIFFERENT PAGES
     var name = $(this).text().trim();
     $(".module_selection_section, .full_screen_overlay, header, .save_section").css({
       display: "none"
     });
     $(".view_tasks_section, .add_item_wrapper").removeAttr('style');
+    $('.status_message').html(name).css({'color':'black', 'font-size':'24px'}).parent().css({'text-align':'center'});
 
-    $('.add_item_wrapper button').click(function(){
+    $('.add_button').click(function(){
       $('.full_overlay_container').show();
       $('.view_tasks_section, .add_item_wrapper').css({'display':'none'});
       $('.full_overlay_container').css({'z-index':99999});
@@ -74,25 +94,15 @@ $(document).ready(function() {
       });
     });
 
-    updateTasks(name);
-    $('.save_button').addClass(name);
-    
-    $(".save_button").click(function() {
-      if (editDisabled && checkboxesEnabled && checkedBoxes.length > 0) {
-        $("input:checkbox").removeAttr("disabled");
-        $("#edit").css({ "pointer-events": "none" });
-
-        $(".subject-1:input").click(() => {
-          alert("Hello");
-        });
-        for (let i = 0; i < checkedBoxes.length; i++) {
-          const currentValue = $("." + checkedBoxes[i] + "_input").val();
-          console.log(currentValue);
-          $("." + checkedBoxes[i]).html("<span>" + currentValue + "</span>");
-        }
-      }
+    $('.back_button').click(function(){
+      location.reload();
+      $('.view_tasks_section, .add_item_wrapper').css({'display':'none'});
+      $('.module_selection_section, .save_section, header').removeAttr('style');
     });
 
+    updateTasks(name);
+    
+    //STATE MANAGEMENT
     //Save task button
     $(".save_task").click(function() {
       console.log(name);
@@ -194,13 +204,15 @@ $(document).ready(function() {
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        $(`.countdown_timer_${object._id}`).html(
-          `${days} : ${hours} : ${minutes} : ${seconds}`
-        );
-
-        if (distance < 0) {
+        console.log(distance);
+        if (distance <= 0) {
           clearInterval(x);
-          $(`.countdown_timer_${object.id}`).html("EXPIRED");
+          $(`.countdown_timer_${object._id}`).html(`EXPIRED`);
+        }else{
+          $(`.countdown_timer_${object._id}`).html(
+            `${days} : ${hours} : ${minutes} : ${seconds}`
+          );
+  
         }
       }, 1000);
 
@@ -255,9 +267,5 @@ $(document).ready(function() {
 
       console.log(displayMap);
     }
-
-    //post REQUEST depending on the button which is cliked
-
-    //VIEW TASK SECTION SHOW
   });
 });
