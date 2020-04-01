@@ -176,8 +176,10 @@ header {
         display: -webkit-box;
         display: flex;
         //Text needs to be centrally aligned
-        text-align: center !important;
-        font-size:32px;
+        text-align: center;
+        align-items: center;
+        font-size:24px;
+        font-weight: bold;
       }
       .bottom_task_section {
         div {
@@ -213,11 +215,20 @@ header {
         color: red;
       }
 
+        
+
     }
 
     button{
       //background: red;
+      img{
+        width: 1em;
+        height: 1em;
+        padding: 0;
+      }
       @include buttonDesign();
+      border:none;
+      padding: 0;
       width: auto;
       height: auto;      
     }

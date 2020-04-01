@@ -115,8 +115,10 @@ header {
       .view_tasks_section .swiper-wrapper .task_wrapper .middle_task_section {
         display: -webkit-box;
         display: flex;
-        text-align: center !important;
-        font-size: 32px; }
+        text-align: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold; }
       .view_tasks_section .swiper-wrapper .task_wrapper .bottom_task_section div {
         height: auto;
         width: auto; }
@@ -146,8 +148,14 @@ header {
       font-size: 16px;
       border: 1px solid black;
       color: black;
+      border: none;
+      padding: 0;
       width: auto;
       height: auto; }
+      .full_overlay_container .cancel_navigation_section button img {
+        width: 1em;
+        height: 1em;
+        padding: 0; }
   .full_overlay_container .edit_task_section {
     display: grid;
     grid-template-columns: 1fr;

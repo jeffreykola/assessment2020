@@ -1,4 +1,7 @@
+/*eslint-disable*/
+
 $(document).ready(function() {
+  $('.status_message').html(`<b>MODULE</b> MANAGER`);
   //Swiper from swiper.js used for viewing tasks
   const mySwiper = new Swiper(".swiper-container", {
     slidesPerView: "auto",
@@ -10,7 +13,6 @@ $(document).ready(function() {
 
   //Datetime picker from flactpickr
   let date = new Date();
-  const loadedTime = date.getHours() + ":" + date.getMinutes();
   const defaultState = {
     enableTime: true,
     dateFormat: "Z",
@@ -71,38 +73,71 @@ $(document).ready(function() {
         }
       }
     });
-
   });
 
+  //Once you click on a module to view the tasks of of
   $(".module_name button").click(function() {
-    //HANDLING THE SHOWING OF DIFFERENT PAGES
-    var name = $(this).text().trim();
-    $(".module_selection_section, .full_screen_overlay, header, .save_section").css({
+    var name = $(this)
+      .text()
+      .trim();
+      //Hide everything except the view task sectiona nd the add item wrapper
+    $(
+      ".module_selection_section, .full_screen_overlay, header, .save_section"
+    ).css({
       display: "none"
     });
-    $(".view_tasks_section, .add_item_wrapper").removeAttr('style');
-    $('.status_message').html(name).css({'color':'black', 'font-size':'24px'}).parent().css({'text-align':'center'});
 
-    $('.add_button').click(function(){
-      $('.full_overlay_container').show();
-      $('.view_tasks_section, .add_item_wrapper').css({'display':'none'});
-      $('.full_overlay_container').css({'z-index':99999});
+    $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
+    //Update status message with the name of the module
+    $(".status_message")
+      .html(name)
+      .css({ color: "black", "font-size": "24px" })
+      .parent()
+      .css({ "text-align": "center" });
+    //If one chooses to add a task hide and show required divs
+    $(".add_button").click(function() {
+      $(".full_overlay_container").show();
+      $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
+      $(".full_overlay_container").css({ "z-index": 99999 });
 
-      $('.close_button').click(function(){
-        $('.full_overlay_container').css({'display':'none'});
-        $('.view_tasks_section, .add_item_wrapper').removeAttr('style');
+      //If closing the add task section
+      $(".close_button").click(function() {
+        $(".full_overlay_container").css({ display: "none" });
+        $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
+        $('.status_message').html(name);
       });
     });
 
-    $('.back_button').click(function(){
+    //Go back to the homepage
+    $(".back_button").click(function() {
+      $('.status_message').removeAttr("style");
+      $('.status_message').html(`<b>MODULE</b> MANAGER`);
       location.reload();
-      $('.view_tasks_section, .add_item_wrapper').css({'display':'none'});
-      $('.module_selection_section, .save_section, header').removeAttr('style');
+      $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
+      $(".module_selection_section, .save_section, header").removeAttr("style");
     });
 
     updateTasks(name);
-    
-    //STATE MANAGEMENT
+
+    var color = "";
+    $('.task_desc_inp').keyup(function(){
+      
+      const MAXLENGTH = $(this).attr("maxlength");
+      const remainingCharacters = MAXLENGTH - $('.task_desc_inp').val().length;
+
+      if(remainingCharacters >= 70){
+        color = "green";
+      }else if(remainingCharacters >= 50 && remainingCharacters <= 70){
+        color = "orange"
+      }else{
+        color="red";
+      }
+
+      console.log(remainingCharacters);
+      console.log(color);
+      $('.character_count').html(`${remainingCharacters}`).css({"color":`${color}`, "font-size": "14px"});
+      
+    });
     //Save task button
     $(".save_task").click(function() {
       console.log(name);
@@ -174,10 +209,10 @@ $(document).ready(function() {
           backgroundColor = "red";
           break;
         case "medium":
-          backgroundColor = "orange";
+          backgroundColor = "#ffbf00";
           break;
         case "low":
-          backgroundColor = "green";
+          backgroundColor = "#85ba6a";
           break;
         default:
           console.log("There has been an error");
@@ -186,8 +221,6 @@ $(document).ready(function() {
       // Set the date we're counting down to
       var countDownDate = new Date(object.date).getTime();
 
-      // Update the count down every 1 second
-      var days = (hours = minutes = seconds = 0);
 
       var x = setInterval(function() {
         // Get today's date and time
@@ -204,15 +237,14 @@ $(document).ready(function() {
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        console.log(distance);
+        //console.log(distance);
         if (distance <= 0) {
           clearInterval(x);
-          $(`.countdown_timer_${object._id}`).html(`EXPIRED`);
-        }else{
+          $(`.countdown_timer_${object._id}`).html(`This task has expired`);
+        } else {
           $(`.countdown_timer_${object._id}`).html(
             `${days} : ${hours} : ${minutes} : ${seconds}`
           );
-  
         }
       }, 1000);
 
@@ -254,10 +286,9 @@ $(document).ready(function() {
         method: "GET"
       });
       const data = await response.json();
-
+      console.log(data);
       for (let i = 0; i < data.length; i++) {
         if (!displayMap.has([data[i]["_id"]])) {
-          //$(htmlTaskTemplate(data[i])).insertBefore($('.swiper-scrollbar'));
           mySwiper.appendSlide(htmlTaskTemplate(data[i]));
           displayMap.set(data[i]["_id"], "displayed");
         } else {

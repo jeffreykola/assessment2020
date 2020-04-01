@@ -1,9 +1,7 @@
-const fetch = require('node-fetch');
 const express = require('express');
 const app = express();
 const Datastore = require('nedb');
 
-const http = require('http');
 //const fs = require('fs');
 const bodyParser = require("body-parser");
 app.use(express.static('assets'));
