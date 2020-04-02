@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const Datastore = require('nedb');
+var escape = require('escape-html');
 
 //const fs = require('fs');
 const bodyParser = require("body-parser");
@@ -12,6 +13,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
+     
 
 
 //POST route for adding a task
@@ -19,15 +21,17 @@ app.post('/', function(req,res){
     const data = req.body;
     var database = new Datastore(`${req.body.module}_tasks.db`);
     database.loadDatabase();
+    data.taskName = escape(data.taskName);
+    data.description = escape(data.description);
     database.insert(data);
     res.sendStatus(200);
-    console.log(`Added a task to the database`);
+    //console.log(`Added a task to the database`);
 });
 
 //GET route for getting all the tasks
 
 app.get(`/data`, function(req,res){
-    console.log("received");
+    //console.log("received");
     console.log(`${req.query.id}_tasks.db`)
     var database = new Datastore(`${req.query.id}_tasks.db`);
     database.loadDatabase();
@@ -36,10 +40,11 @@ app.get(`/data`, function(req,res){
             res.json({'code': 600});
             res.end();
         }
-        console.log(data);
+        //console.log(data);
         res.send(JSON.stringify(data));
     });
 });
 
 app.listen(3000);
 
+module.exports = app;

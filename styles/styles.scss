@@ -41,6 +41,11 @@ body {
 //HEADER
 header {
   padding: 1em;
+  display: grid;
+  grid-template-columns: 0.8fr 0.2fr;
+  grid-template-rows: 1fr;
+  grid-row-gap: 0px;
+  grid-column-gap: 0.2em;
   div {
     height: -webkit-fit-content;
     height: -moz-fit-content;
@@ -143,17 +148,27 @@ header {
     }
   }
   .swiper-wrapper{
-      width: auto;
+    @media screen and (min-width:800px){
+      width:100vw;
+  }
+      padding: 1em;
   .task_wrapper {
     padding:1em;
     margin-top: 10em;
     height: 50vh;
-    width: 90vw;
+    width: 80vw;
+    @media screen and (min-width:800px){
+        width:25vw;
+    }
+    border-radius: 5%;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 0.1fr repeat(2, 1fr);
     grid-column-gap: 0px;
-    grid-row-gap: 0.5em;
+    grid-row-gap: 0.5em; 
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .13);
+    // box-shadow:  8px 8px 16px #d9d9d9, 
+    //          -8px -8px 16px #ffffff;
     .top_task_section {
       display: grid;
       grid-template-columns: 1fr 0.1fr;
@@ -256,7 +271,10 @@ header {
       padding-left: 0px;
       margin: 0px;
       line-height: 1em;
+      resize: none;
+      background-color: white;
     }
+    
   }
   div {
     height: -webkit-fit-content;
