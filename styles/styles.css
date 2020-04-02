@@ -93,10 +93,8 @@ header {
       padding: 1em;
       padding: 0; }
   .view_tasks_section .swiper-wrapper {
+    width: 100vw;
     padding: 1em; }
-    @media screen and (min-width: 800px) {
-      .view_tasks_section .swiper-wrapper {
-        width: 100vw; } }
     .view_tasks_section .swiper-wrapper .task_wrapper {
       padding: 1em;
       margin-top: 10em;
@@ -112,6 +110,12 @@ header {
       @media screen and (min-width: 800px) {
         .view_tasks_section .swiper-wrapper .task_wrapper {
           width: 25vw; } }
+      @media screen and (max-width: 600px) {
+        .view_tasks_section .swiper-wrapper .task_wrapper {
+          width: 80vw; } }
+      @media screen and (min-width: 600px) and (max-width: 800px) {
+        .view_tasks_section .swiper-wrapper .task_wrapper {
+          width: 40vw; } }
       .view_tasks_section .swiper-wrapper .task_wrapper .top_task_section {
         display: grid;
         grid-template-columns: 1fr 0.1fr;

@@ -3,22 +3,66 @@
 $(document).ready(function() {
   $('.status_message').html(`<b>MODULE</b> MANAGER`);
   //Swiper from swiper.js used for viewing tasks
-  const mySwiper = new Swiper(".swiper-container", {
-    slidesPerView: "auto",
-    spaceBetween: 0,
-    scrollbar: {
-      el: ".swiper-scrollbar"
+ 
+ 
+
+  var slidePerView = "";
+  function evaluateSlidePerView(){
+    let windowWidth = parseInt($(window).width());
+    switch(true){
+      case windowWidth > 800:
+        slidePerView = 3;
+        console.log("Yurpppp");
+        break;
+      case (windowWidth > 600 && windowWidth < 800):
+        slidePerView = 2;
+        console.log("no yurp");
+        break;
+      case windowWidth < 600:
+        console.log("less than")
+        slidePerView = 1;
+        break;
+      default:
+        console.log('def case');
     }
+
+    let mySwiper = new Swiper(".swiper-container", {
+      slidesPerView: slidePerView,
+      spaceBetween: 0,
+      scrollbar: {
+        el: ".swiper-scrollbar"
+      }
+    });
+
+    return mySwiper;
+    
+  }
+
+  let mySwiper = evaluateSlidePerView();
+  
+
+  $(window).on('resize', function(){
+    let mySwiper = evaluateSlidePerView();
+   
   });
+
+
+
+
+
+
 
   //Datetime picker from flactpickr
   let date = new Date();
+  date.setMinutes(date.getMinutes() + 1);
+
   const defaultState = {
     enableTime: true,
     dateFormat: "Z",
     altInput: true,
     spaceBetween: 10,
     minDate: "today",
+    minTime: date,
     disableMobile: true
   };
 
@@ -99,9 +143,11 @@ $(document).ready(function() {
       $(".full_overlay_container").show();
       $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
       $(".full_overlay_container").css({ "z-index": 99999 });
+      $('.character_count').html(' ');
 
       //If closing the add task section
       $(".close_button").click(function() {
+        $('.status_message').css({"font-size":"24px"});
         $(".full_overlay_container").css({ display: "none" });
         $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
         $('.status_message').html(name);
@@ -112,9 +158,12 @@ $(document).ready(function() {
     $(".back_button").click(function() {
       $('.status_message').removeAttr("style");
       $('.status_message').html(`<b>MODULE</b> MANAGER`);
+      const currentTime = new Date(); 
+      const displayTime = `${currentTime.getHours()}: ${currentTime.getMinutes()}`;
       location.reload();
       $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
       $(".module_selection_section, .save_section, header").removeAttr("style");
+      $('.time_refreshed').html(displayTime);
     });
 
     updateTasks(name);
@@ -140,13 +189,25 @@ $(document).ready(function() {
     });
     //Save task button
     $(".save_task").click(function() {
-      console.log(name);
+
+      const taskp = (str) => {
+
+        if(str=="high"){
+          return 1;
+        }else if(str=="medium"){
+          return 0;
+        }else{
+          return -1;
+        }
+      } 
+    
+
       const Task = {
-        taskName: $("#task_name").val(),
-        descripition: $(".task_desc_inp").val(),
-        priority: $(".task_priority").val(),
+        taskName:$("#task_name").val(),
+        description:$(".task_desc_inp").val(),
+        priority: taskp($(".task_priority").val()),
         date: $(".datepicker").val(),
-        module: name
+        module: name,
       };
 
       if (Object.values(Task).includes("")) {
@@ -157,9 +218,9 @@ $(document).ready(function() {
           if (Object.values(Task)[i] == "") {
             const niceDisplay = {
               taskName: "Task Name",
-              descripition: "Task Description",
+              description: "Task Description",
               priority: "Task Priority",
-              date: "Deadline "
+              date: "Deadline"
             };
 
             $(".required_fields").append(
@@ -192,7 +253,7 @@ $(document).ready(function() {
             if (res.status == "200") {
               $(".status_message").html(
                 `You just added a task called: <b>${Task.taskName}</b>`
-              );
+              ).css({'font-size': '16px'});
             } else if (res.status == "404") {
               $(".status_message").html(`Not Found Error: Please Try Again`);
             }
@@ -205,13 +266,13 @@ $(document).ready(function() {
     const htmlTaskTemplate = object => {
       let backgroundColor = "none";
       switch (object.priority) {
-        case "high":
+        case 1:
           backgroundColor = "red";
           break;
-        case "medium":
+        case 0:
           backgroundColor = "#ffbf00";
           break;
-        case "low":
+        case -1:
           backgroundColor = "#85ba6a";
           break;
         default:
@@ -267,7 +328,7 @@ $(document).ready(function() {
 
       <div class="bottom_task_section">
           <p class="task_description">
-            ${object.descripition}
+            ${object.description}
           </p>
       </div>
   </div>
@@ -287,6 +348,8 @@ $(document).ready(function() {
       });
       const data = await response.json();
       console.log(data);
+      //Showing tasks in order of their priority and then in order of their deadlines
+      data.sort((a,b) => (a.priority < b.priority) ? 1 : (a.priority === b.priority) ? ((a.date > b.date) ? 1 : -1) : -1 );
       for (let i = 0; i < data.length; i++) {
         if (!displayMap.has([data[i]["_id"]])) {
           mySwiper.appendSlide(htmlTaskTemplate(data[i]));
@@ -299,4 +362,11 @@ $(document).ready(function() {
       console.log(displayMap);
     }
   });
+
+  $('.task_wrapper').click(function(){
+
+  });
+
+
+
 });

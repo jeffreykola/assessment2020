@@ -37,7 +37,6 @@ body {
   padding: 1em;
 }
 
-
 //HEADER
 header {
   padding: 1em;
@@ -118,12 +117,11 @@ header {
       grid-column-gap: 0px;
       grid-row-gap: 0px;
       div {
-
-        button{
-            background: white;
-            border:1px solid black;
-            padding:1.5em;
-            font-size: 14px;
+        button {
+          background: white;
+          border: 1px solid black;
+          padding: 1.5em;
+          font-size: 14px;
         }
       }
     }
@@ -138,62 +136,69 @@ header {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   .refresh_status {
-      text-align: center;
-      padding-top: 1em;
-      vertical-align: middle;
-      font-size: 1em;
+    text-align: center;
+    padding-top: 1em;
+    vertical-align: middle;
+    font-size: 1em;
     .icon {
       @include iconStyling();
       padding: 0;
     }
   }
-  .swiper-wrapper{
-    @media screen and (min-width:800px){
-      width:100vw;
-  }
+  .swiper-wrapper {
+    width: 100vw;
+    padding: 1em;
+
+    .task_wrapper {
       padding: 1em;
-  .task_wrapper {
-    padding:1em;
-    margin-top: 10em;
-    height: 50vh;
-    width: 80vw;
-    @media screen and (min-width:800px){
-        width:25vw;
-    }
-    border-radius: 5%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.1fr repeat(2, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0.5em; 
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .13);
-    // box-shadow:  8px 8px 16px #d9d9d9, 
-    //          -8px -8px 16px #ffffff;
-    .top_task_section {
-      display: grid;
-      grid-template-columns: 1fr 0.1fr;
-      grid-template-rows: 1fr;
-      grid-column-gap: 0px;
-      grid-row-gap: 0px;
-      .task_name_wrap {
-        div {
-          height: -webkit-fit-content;
-          height: -moz-fit-content;
-          height: fit-content;
-          width: -webkit-fit-content;
-          width: -moz-fit-content;
-          width: fit-content;
-        }
+      margin-top: 10em;
+      height: 50vh;
+      width: 80vw;
+      @media screen and (min-width: 800px) {
+        width: 25vw;
       }
 
-    }
+      @media screen and (max-width: 600px) {
+        width: 80vw;
+      }
+
+      @media screen and (min-width: 600px) and (max-width: 800px) {
+        width: 40vw;
+      }
+
+      border-radius: 5%;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 0.1fr repeat(2, 1fr);
+      grid-column-gap: 0px;
+      grid-row-gap: 0.5em;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+      // box-shadow:  8px 8px 16px #d9d9d9,
+      //          -8px -8px 16px #ffffff;
+      .top_task_section {
+        display: grid;
+        grid-template-columns: 1fr 0.1fr;
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        .task_name_wrap {
+          div {
+            height: -webkit-fit-content;
+            height: -moz-fit-content;
+            height: fit-content;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content;
+          }
+        }
+      }
       .middle_task_section {
         display: -webkit-box;
         display: flex;
         //Text needs to be centrally aligned
         text-align: center;
         align-items: center;
-        font-size:24px;
+        font-size: 24px;
         font-weight: bold;
       }
       .bottom_task_section {
@@ -202,9 +207,8 @@ header {
           width: auto;
         }
       }
-    
+    }
   }
-}
 }
 
 //FULL SCREEN OVERLAY
@@ -222,30 +226,27 @@ header {
     grid-template-rows: 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    
+
     .status_updates_wrapper {
       .status_message {
         padding-left: 1em;
         font-size: 14px;
         color: red;
       }
-
-        
-
     }
 
-    button{
+    button {
       //background: red;
-      img{
+      img {
         width: 1em;
         height: 1em;
         padding: 0;
       }
       @include buttonDesign();
-      border:none;
+      border: none;
       padding: 0;
       width: auto;
-      height: auto;      
+      height: auto;
     }
   }
   .edit_task_section {
@@ -274,7 +275,6 @@ header {
       resize: none;
       background-color: white;
     }
-    
   }
   div {
     height: -webkit-fit-content;
@@ -321,21 +321,20 @@ footer {
       width: auto;
       height: auto;
       background: white;
-      border:none;
-      img{
+      border: none;
+      img {
         padding: 1em;
       }
     }
 
-    .back_button{
-      border:none;
-      img{
+    .back_button {
+      border: none;
+      img {
         height: 3em;
         width: 3em;
-        border:none;
-        padding:none;
+        border: none;
+        padding: none;
       }
     }
   }
 }
-
