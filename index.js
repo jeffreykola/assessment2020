@@ -6,45 +6,58 @@ $(document).ready(function() {
  
  
 
-  var slidePerView = "";
-  function evaluateSlidePerView(){
-    let windowWidth = parseInt($(window).width());
-    switch(true){
-      case windowWidth > 800:
-        slidePerView = 3;
-        console.log("Yurpppp");
-        break;
-      case (windowWidth > 600 && windowWidth < 800):
-        slidePerView = 2;
-        console.log("no yurp");
-        break;
-      case windowWidth < 600:
-        console.log("less than")
-        slidePerView = 1;
-        break;
-      default:
-        console.log('def case');
-    }
+  // var slidePerView = "";
+  // function evaluateSlidePerView(){
+  //   let windowWidth = parseInt($(window).width());
+  //   switch(true){
+  //     case windowWidth > 800:
+  //       slidePerView = 3;
+  //       console.log("Yurpppp");
+  //       break;
+  //     case (windowWidth > 600 && windowWidth < 800):
+  //       slidePerView = 2;
+  //       console.log("no yurp");
+  //       break;
+  //     case windowWidth < 600:
+  //       console.log("less than")
+  //       slidePerView = 1;
+  //       break;
+  //     default:
+  //       console.log('def case');
+    //}
 
     let mySwiper = new Swiper(".swiper-container", {
-      slidesPerView: slidePerView,
+      slidesPerView: 1,
       spaceBetween: 0,
+      breakpoints: {
+        // when window width is >= 320px
+        800: {
+          slidesPerView: 3,
+        },
+        // when window width is >= 480px
+        600: {
+          slidesPerView: 2,
+        },
+        // when window width is >= 640px
+        500: {
+          slidesPerView: 1,
+        }
+      },
       scrollbar: {
         el: ".swiper-scrollbar"
       }
     });
 
-    return mySwiper;
+    //return mySwiper;
     
-  }
+  //}
 
-  let mySwiper = evaluateSlidePerView();
+  // let mySwiper = evaluateSlidePerView();
   
 
-  $(window).on('resize', function(){
-    let mySwiper = evaluateSlidePerView();
-   
-  });
+  // $(window).on('resize', function(){
+  //   let mySwiper = evaluateSlidePerView();
+  // });
 
 
 
