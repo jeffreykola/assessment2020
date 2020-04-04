@@ -41,14 +41,25 @@ body {
 header {
   padding: 1em;
   display: grid;
-  grid-template-columns: 0.8fr 0.2fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   grid-row-gap: 0px;
   grid-column-gap: 0.2em;
+  font-size: 16px;
+  @media screen and (min-width: 800px) {
+    font-size: 24px;
+  }
   div {
     height: -webkit-fit-content;
     height: -moz-fit-content;
     height: fit-content;
+    width: 100%;
+  }
+
+  
+  .refresh_message{
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
@@ -69,45 +80,58 @@ header {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     padding: 1em;
+
+
+
     .action_tray {
+      margin-top: auto;
+      margin-bottom: auto;
       display: -webkit-box;
       display: flex;
-      -webkit-box-pack: end;
-      justify-content: flex-end;
-      div {
+      justify-content: center;
+      text-align: center;
+
+      input{
+        background: #eeeeee;
+        padding-left: 1em;
         height: 2em;
-        width: 2em;
-        img {
-          height: inherit;
-          width: inherit;
+        border:none;
+        width: 70%;
+        border-radius: 36px;
+        margin-right: 0.5em;
+      }
+
+      button{
+        background: white;
+        padding: 0.5em;
+        height: fit-content;
+        width: fit-content;
+        border:none;
+        display: none;
+        img{
+          height:1em;
+          width: 1em;
         }
+      }
+
       }
       margin-bottom: 1em;
     }
     .module_section {
-      display: grid;
-      grid-template-columns: 0.1fr 1fr;
-      grid-template-rows: 1fr;
-      grid-column-gap: 0px;
-      grid-row-gap: 0px;
+     display: block;
+     
       //need to change styling of checkbox
       .checkbox {
         input {
           -webkit-transform: scale(1.8);
           transform: scale(1.8);
+
+          @media screen and (min-width: 800px) {
+            transform: scale(3);
         }
       }
     }
-    .edit_delete_checkbox {
-      grid-area: 1 / 1 / 2 / 2;
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(6, 1fr);
-      grid-column-gap: 0px;
-      grid-row-gap: 0px;
-      div {
-        padding: 2em;
-      }
+
     }
     .module_selection {
       grid-area: 1 / 2 / 2 / 3;
@@ -116,17 +140,33 @@ header {
       grid-template-rows: repeat(6, 1fr);
       grid-column-gap: 0px;
       grid-row-gap: 0px;
+      text-align: center;
+      height: 80vh;
       div {
+        margin-top: auto;
+        margin-bottom: auto;
+        @media screen and (min-width: 800px) {
+  
+        }
         button {
           background: white;
-          border: 1px solid black;
           padding: 1.5em;
           font-size: 14px;
+          border:none;
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+          width: 70%;
+          border-radius: 36px;
+          @media screen and (min-width: 800px) {
+              font-size: 24px;
+              padding: 1em;
+              
+          }
         }
       }
     }
   }
-}
+
+
 
 //VIEW TASKS
 .view_tasks_section {
@@ -200,6 +240,12 @@ header {
         align-items: center;
         font-size: 24px;
         font-weight: bold;
+        p{
+          text-align: center;
+          margin-left: auto;
+          margin-right: auto;
+          font-size:1.5em;
+        }
       }
       .bottom_task_section {
         div {
@@ -233,6 +279,8 @@ header {
         font-size: 14px;
         color: red;
       }
+
+
     }
 
     button {
@@ -312,6 +360,9 @@ footer {
     -webkit-box-pack: end;
     button {
       @include buttonDesign();
+            @media screen and (min-width: 800px) {
+              font-size: 24px;
+            }
     }
   }
   .add_item_wrapper {

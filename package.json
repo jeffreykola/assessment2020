@@ -2,12 +2,13 @@
   "name": "module_manager",
   "version": "1.0.0",
   "description": "Manages tasks within modules",
-  "main": "index.js",
+  "main": "server.js",
 
   "scripts": {
     "css": "node-sass styles/styles.scss -o styles",
     "test":"jest",
-    "css:watch": "npm run css && node-sass styles/styles.scss -wo styles"
+    "css:watch": "npm run css && node-sass styles/styles.scss -wo styles",
+    "start": "nodemon -e db,js"
   },
   "devDependencies": {
     "cors": "^2.8.5",

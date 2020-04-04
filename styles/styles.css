@@ -11,14 +11,22 @@ body {
 header {
   padding: 1em;
   display: grid;
-  grid-template-columns: 0.8fr 0.2fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   grid-row-gap: 0px;
-  grid-column-gap: 0.2em; }
+  grid-column-gap: 0.2em;
+  font-size: 16px; }
+  @media screen and (min-width: 800px) {
+    header {
+      font-size: 24px; } }
   header div {
     height: -webkit-fit-content;
     height: -moz-fit-content;
-    height: fit-content; }
+    height: fit-content;
+    width: 100%; }
+  header .refresh_message {
+    display: flex;
+    justify-content: flex-end; }
 
 #container {
   height: 100%;
@@ -32,49 +40,67 @@ header {
   grid-template-rows: 0.1fr 0.9fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  padding: 1em; }
+  padding: 1em;
+  margin-bottom: 1em; }
   .active_display .module_selection_section .action_tray {
+    margin-top: auto;
+    margin-bottom: auto;
     display: -webkit-box;
     display: flex;
-    -webkit-box-pack: end;
-    justify-content: flex-end;
-    margin-bottom: 1em; }
-    .active_display .module_selection_section .action_tray div {
+    justify-content: center;
+    text-align: center; }
+    .active_display .module_selection_section .action_tray input {
+      background: #eeeeee;
+      padding-left: 1em;
       height: 2em;
-      width: 2em; }
-      .active_display .module_selection_section .action_tray div img {
-        height: inherit;
-        width: inherit; }
-  .active_display .module_selection_section .module_section {
-    display: grid;
-    grid-template-columns: 0.1fr 1fr;
-    grid-template-rows: 1fr;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px; }
-    .active_display .module_selection_section .module_section .checkbox input {
-      -webkit-transform: scale(1.8);
-      transform: scale(1.8); }
-  .active_display .module_selection_section .edit_delete_checkbox {
-    grid-area: 1 / 1 / 2 / 2;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(6, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px; }
-    .active_display .module_selection_section .edit_delete_checkbox div {
-      padding: 2em; }
-  .active_display .module_selection_section .module_selection {
-    grid-area: 1 / 2 / 2 / 3;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(6, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px; }
-    .active_display .module_selection_section .module_selection div button {
+      border: none;
+      width: 70%;
+      border-radius: 36px;
+      margin-right: 0.5em; }
+    .active_display .module_selection_section .action_tray button {
       background: white;
-      border: 1px solid black;
+      padding: 0.5em;
+      height: fit-content;
+      width: fit-content;
+      border: none;
+      display: none; }
+      .active_display .module_selection_section .action_tray button img {
+        height: 1em;
+        width: 1em; }
+
+.active_display .module_section {
+  display: block; }
+  .active_display .module_section .checkbox input {
+    -webkit-transform: scale(1.8);
+    transform: scale(1.8); }
+    @media screen and (min-width: 800px) {
+      .active_display .module_section .checkbox input {
+        transform: scale(3); } }
+
+.active_display .module_selection {
+  grid-area: 1 / 2 / 2 / 3;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(6, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  text-align: center;
+  height: 80vh; }
+  .active_display .module_selection div {
+    margin-top: auto;
+    margin-bottom: auto; }
+    .active_display .module_selection div button {
+      background: white;
       padding: 1.5em;
-      font-size: 14px; }
+      font-size: 14px;
+      border: none;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+      width: 70%;
+      border-radius: 36px; }
+      @media screen and (min-width: 800px) {
+        .active_display .module_selection div button {
+          font-size: 24px;
+          padding: 1em; } }
 
 .view_tasks_section {
   display: grid;
@@ -136,6 +162,11 @@ header {
         align-items: center;
         font-size: 24px;
         font-weight: bold; }
+        .view_tasks_section .swiper-wrapper .task_wrapper .middle_task_section p {
+          text-align: center;
+          margin-left: auto;
+          margin-right: auto;
+          font-size: 1.5em; }
       .view_tasks_section .swiper-wrapper .task_wrapper .bottom_task_section div {
         height: auto;
         width: auto; }
@@ -238,6 +269,9 @@ footer {
       font-size: 16px;
       border: 1px solid black;
       color: black; }
+      @media screen and (min-width: 800px) {
+        footer .save_section button {
+          font-size: 24px; } }
   footer .add_item_wrapper {
     display: flex;
     justify-content: space-around; }

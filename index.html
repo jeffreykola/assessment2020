@@ -29,62 +29,22 @@
   <body>
     <header class="status_message_wrapper">
       <div class="status_message"></div>
-  
+      <div class="refresh_message"><span>Up to date</span></div>
     </header>
+
+
     <div class="container">
       <section class="active_display">
         <!--Module section-->
         <div class="module_selection_section">
           <div class="action_tray">
-            <div class="edit_icon">
-              <img id="edit" src="./assets/icons/edit.svg" />
-            </div>
-            <div class="delete_icon">
-              <img src="./assets/icons/delete.svg" />
-            </div>
+            <input name="module_search" class="module_search" placeholder="Add module..." maxlength="24" type="text"/>
+            <button class="add_button"><img src="./assets/icons/add.svg"/></button>
           </div>
 
           <div class="module_section">
-            <div class="edit_delete_checkbox">
-              <div class="checkbox">
-                <input name="subject-1" type="checkbox" />
-              </div>
-              <div class="checkbox">
-                <input name="subject-2" type="checkbox" />
-              </div>
-              <div class="checkbox">
-                <input name="subject-3" type="checkbox" />
-              </div>
-              <div class="checkbox">
-                <input name="subject-4" type="checkbox" />
-              </div>
-              <div class="checkbox">
-                <input name="subject-5" type="checkbox" />
-              </div>
-              <div class="checkbox">
-                <input name="subject-6" type="checkbox" />
-              </div>
-            </div>
 
             <div class="module_selection">
-              <div class="module_name">
-                <button class="subject-1">Programming</button>
-              </div>
-              <div class="module_name subject-2">
-                <button>Computational Thinking</button>
-              </div>
-              <div class="module_name subject-3">
-                <button>Mathematics for Computer Science</button>
-              </div>
-              <div class="module_name subject-4">
-                <button>Algorithms and Data Structures</button>
-              </div>
-              <div class="module_name subject-5">
-                <button>Computer Systems</button>
-              </div>
-              <div class="module_name subject-6">
-                <button>Calculus I</button>
-              </div>
             </div>
           </div>
         </div>
@@ -145,9 +105,6 @@
       </section>
       <footer>
         <!--Module Section-->
-        <div class="save_section active_footer">
-          <button class="save_button">Done</button>
-        </div>
         <!--View Tasks section-->
         <div style="display:none;" class="add_item_wrapper">
           <button class="back_button">
@@ -159,6 +116,6 @@
         </div>
       </footer>
     </div>
-    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="./src/index.js"></script>
   </body>
 </html>
