@@ -46,7 +46,12 @@ header {
   grid-row-gap: 0px;
   grid-column-gap: 0.2em;
   font-size: 16px;
-  @media screen and (min-width: 800px) {
+  background: #F3F3F3;
+  @media screen and (min-width: 376px) and (max-width:900px) {
+    font-size: 18px;
+  }
+
+  @media screen and (min-width: 900px) {
     font-size: 24px;
   }
   div {
@@ -72,7 +77,8 @@ header {
 }
 
 .active_display {
-  //MODULE SELECTION
+
+
   .module_selection_section {
     display: grid;
     grid-template-columns: 1fr;
@@ -99,6 +105,14 @@ header {
         width: 70%;
         border-radius: 36px;
         margin-right: 0.5em;
+
+        @media screen and (min-width: 376px) and (max-width:900px){
+          font-size: 20px;
+        }
+
+        @media screen and (min-width: 900px) {
+          font-size: 24px;
+        }
       }
 
       button{
@@ -108,9 +122,20 @@ header {
         width: fit-content;
         border:none;
         display: none;
+
         img{
           height:1em;
           width: 1em;
+
+        @media screen and (min-width: 376px) and (max-width:900px){
+          height: 2em;
+          width: 2em;
+        }
+
+        @media screen and (min-width: 900px) {
+          height: 2.5em;
+          width: 2.5em;
+        }
         }
       }
 
@@ -121,16 +146,7 @@ header {
      display: block;
      
       //need to change styling of checkbox
-      .checkbox {
-        input {
-          -webkit-transform: scale(1.8);
-          transform: scale(1.8);
 
-          @media screen and (min-width: 800px) {
-            transform: scale(3);
-        }
-      }
-    }
 
     }
     .module_selection {
@@ -143,28 +159,58 @@ header {
       text-align: center;
       height: 80vh;
       div {
-        margin-top: auto;
-        margin-bottom: auto;
-        @media screen and (min-width: 800px) {
-  
+        margin:auto auto auto auto;
+        display: grid;
+        grid-template-columns: 2fr 0.3fr;
+        grid-template-rows: 1fr;
+        grid-column-gap: 1em;
+        grid-row-gap: 0px;
+        width: 70%;
+        @media screen and (min-width: 900px) {
+          
         }
-        button {
+        .sub {
           background: white;
-          padding: 1.5em;
+          padding: 0.5em;
+          margin-right: 1em;
           font-size: 14px;
           border:none;
           box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
-          width: 70%;
+          width: 100%;
           border-radius: 36px;
-          @media screen and (min-width: 800px) {
+          @media screen and (min-width: 900px) {
               font-size: 24px;
               padding: 1em;
-              
+          }
+
+          @media screen and (min-width: 376px) and (max-width: 900px){
+            font-size: 20px;
           }
         }
+
+        
+          justify-content: flex-end;
+          .delete_button{
+            margin-top: auto;
+            background: white;
+            border:none;
+            margin-bottom: auto;
+            margin-left: auto;
+            justify-content: flex-end;
+            padding: 1em;
+            img{
+              height: 1.5em;
+              width: 1.5em;
+              
+              @media screen and  (min-width:900px){
+                height:2em;
+                width: 2em;
+              }
+            }
+          }
       }
-    }
   }
+}
 
 
 
@@ -175,11 +221,27 @@ header {
   grid-template-rows: 0.1fr 2fr 0.1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+  @media screen and (min-width: 900px) {
+    grid-row-gap: 4em;
+  }
+
   .refresh_status {
     text-align: center;
     padding-top: 1em;
+    padding-bottom: 1em;
     vertical-align: middle;
     font-size: 1em;
+    .status_message{
+      color:black;
+      font-size: 16px;
+      @media screen and (min-width: 900px) {
+        font-size: 32px;
+      }
+      @media screen and (min-width: 376px) and (max-width:900px)  {
+        font-size: 24px;
+      }
+    }
+
     .icon {
       @include iconStyling();
       padding: 0;
@@ -194,22 +256,20 @@ header {
       margin-top: 10em;
       height: 50vh;
       width: 80vw;
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         width: 25vw;
+        margin-top: auto;
+        margin-bottom: auto;
       }
 
-      @media screen and (max-width: 600px) {
-        width: 80vw;
-      }
-
-      @media screen and (min-width: 600px) and (max-width: 800px) {
+      @media screen and (min-width: 600px) and (max-width: 900px) {
         width: 40vw;
       }
 
       border-radius: 5%;
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 0.1fr repeat(2, 1fr);
+      grid-template-rows: 0.1fr repeat(2, 1fr) 0.1fr;
       grid-column-gap: 0px;
       grid-row-gap: 0.5em;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
@@ -244,13 +304,29 @@ header {
           text-align: center;
           margin-left: auto;
           margin-right: auto;
-          font-size:1.5em;
+          font-size:1em;
         }
       }
       .bottom_task_section {
         div {
           height: auto;
           width: auto;
+        }
+      }
+
+      .delete_task_section{
+        display: flex;
+        justify-content: flex-end;
+        button{
+          border-radius: 50%;
+          background: inherit;
+          border:none;
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+          img{
+            padding: 0.5em;
+            height: 2em;
+            width: 2em;
+          }
         }
       }
     }
@@ -274,10 +350,19 @@ header {
     grid-row-gap: 0px;
 
     .status_updates_wrapper {
+      padding-top: 1em;
       .status_message {
         padding-left: 1em;
-        font-size: 14px;
+        font-size: 16px;
         color: red;
+
+        @media screen and (min-width: 900px) {
+          font-size: 32px;
+        }
+        @media screen and (min-width: 376px) and (max-width:900px)  {
+          font-size: 24px;
+        }
+        
       }
 
 
@@ -295,6 +380,7 @@ header {
       padding: 0;
       width: auto;
       height: auto;
+      margin-top:auto;
     }
   }
   .edit_task_section {
@@ -305,6 +391,15 @@ header {
     grid-row-gap: 0px;
     height: auto;
     margin: 1em;
+    @media screen and (min-width:375px) and (max-width:900px){
+      margin:2em;
+     }
+
+
+    @media screen and (min-width:900px){
+     margin-left:auto;
+     margin-right: auto;
+    }
     div {
       display: grid;
       grid-template-columns: 1fr;
@@ -323,6 +418,21 @@ header {
       resize: none;
       background-color: white;
     }
+
+    textarea{
+      padding-top: 0.5em;
+    }
+
+    textarea,
+    input,
+    select{
+      border:1px solid black;
+      padding-left: 1em;
+    }
+
+    @media screen and (min-width:900px){
+      width: 70%;
+    }
   }
   div {
     height: -webkit-fit-content;
@@ -335,6 +445,7 @@ header {
     .done_button_wrapper {
       button {
         @include buttonDesign();
+        padding: 1em;
       }
     }
   }
@@ -360,7 +471,7 @@ footer {
     -webkit-box-pack: end;
     button {
       @include buttonDesign();
-            @media screen and (min-width: 800px) {
+            @media screen and (min-width: 900px) {
               font-size: 24px;
             }
     }

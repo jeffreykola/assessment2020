@@ -15,8 +15,12 @@ header {
   grid-template-rows: 1fr;
   grid-row-gap: 0px;
   grid-column-gap: 0.2em;
-  font-size: 16px; }
-  @media screen and (min-width: 800px) {
+  font-size: 16px;
+  background: #F3F3F3; }
+  @media screen and (min-width: 376px) and (max-width: 900px) {
+    header {
+      font-size: 18px; } }
+  @media screen and (min-width: 900px) {
     header {
       font-size: 24px; } }
   header div {
@@ -57,6 +61,12 @@ header {
       width: 70%;
       border-radius: 36px;
       margin-right: 0.5em; }
+      @media screen and (min-width: 376px) and (max-width: 900px) {
+        .active_display .module_selection_section .action_tray input {
+          font-size: 20px; } }
+      @media screen and (min-width: 900px) {
+        .active_display .module_selection_section .action_tray input {
+          font-size: 24px; } }
     .active_display .module_selection_section .action_tray button {
       background: white;
       padding: 0.5em;
@@ -67,15 +77,17 @@ header {
       .active_display .module_selection_section .action_tray button img {
         height: 1em;
         width: 1em; }
+        @media screen and (min-width: 376px) and (max-width: 900px) {
+          .active_display .module_selection_section .action_tray button img {
+            height: 2em;
+            width: 2em; } }
+        @media screen and (min-width: 900px) {
+          .active_display .module_selection_section .action_tray button img {
+            height: 2.5em;
+            width: 2.5em; } }
 
 .active_display .module_section {
   display: block; }
-  .active_display .module_section .checkbox input {
-    -webkit-transform: scale(1.8);
-    transform: scale(1.8); }
-    @media screen and (min-width: 800px) {
-      .active_display .module_section .checkbox input {
-        transform: scale(3); } }
 
 .active_display .module_selection {
   grid-area: 1 / 2 / 2 / 3;
@@ -87,20 +99,45 @@ header {
   text-align: center;
   height: 80vh; }
   .active_display .module_selection div {
-    margin-top: auto;
-    margin-bottom: auto; }
-    .active_display .module_selection div button {
+    margin: auto auto auto auto;
+    display: grid;
+    grid-template-columns: 2fr 0.3fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 1em;
+    grid-row-gap: 0px;
+    width: 70%;
+    justify-content: flex-end; }
+    .active_display .module_selection div .sub {
       background: white;
-      padding: 1.5em;
+      padding: 0.5em;
+      margin-right: 1em;
       font-size: 14px;
       border: none;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
-      width: 70%;
+      width: 100%;
       border-radius: 36px; }
-      @media screen and (min-width: 800px) {
-        .active_display .module_selection div button {
+      @media screen and (min-width: 900px) {
+        .active_display .module_selection div .sub {
           font-size: 24px;
           padding: 1em; } }
+      @media screen and (min-width: 376px) and (max-width: 900px) {
+        .active_display .module_selection div .sub {
+          font-size: 20px; } }
+    .active_display .module_selection div .delete_button {
+      margin-top: auto;
+      background: white;
+      border: none;
+      margin-bottom: auto;
+      margin-left: auto;
+      justify-content: flex-end;
+      padding: 1em; }
+      .active_display .module_selection div .delete_button img {
+        height: 1.5em;
+        width: 1.5em; }
+        @media screen and (min-width: 900px) {
+          .active_display .module_selection div .delete_button img {
+            height: 2em;
+            width: 2em; } }
 
 .view_tasks_section {
   display: grid;
@@ -108,11 +145,24 @@ header {
   grid-template-rows: 0.1fr 2fr 0.1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px; }
+  @media screen and (min-width: 900px) {
+    .view_tasks_section {
+      grid-row-gap: 4em; } }
   .view_tasks_section .refresh_status {
     text-align: center;
     padding-top: 1em;
+    padding-bottom: 1em;
     vertical-align: middle;
     font-size: 1em; }
+    .view_tasks_section .refresh_status .status_message {
+      color: black;
+      font-size: 16px; }
+      @media screen and (min-width: 900px) {
+        .view_tasks_section .refresh_status .status_message {
+          font-size: 32px; } }
+      @media screen and (min-width: 376px) and (max-width: 900px) {
+        .view_tasks_section .refresh_status .status_message {
+          font-size: 24px; } }
     .view_tasks_section .refresh_status .icon {
       height: 1em;
       width: 1em;
@@ -129,17 +179,16 @@ header {
       border-radius: 5%;
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 0.1fr repeat(2, 1fr);
+      grid-template-rows: 0.1fr repeat(2, 1fr) 0.1fr;
       grid-column-gap: 0px;
       grid-row-gap: 0.5em;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13); }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         .view_tasks_section .swiper-wrapper .task_wrapper {
-          width: 25vw; } }
-      @media screen and (max-width: 600px) {
-        .view_tasks_section .swiper-wrapper .task_wrapper {
-          width: 80vw; } }
-      @media screen and (min-width: 600px) and (max-width: 800px) {
+          width: 25vw;
+          margin-top: auto;
+          margin-bottom: auto; } }
+      @media screen and (min-width: 600px) and (max-width: 900px) {
         .view_tasks_section .swiper-wrapper .task_wrapper {
           width: 40vw; } }
       .view_tasks_section .swiper-wrapper .task_wrapper .top_task_section {
@@ -166,10 +215,22 @@ header {
           text-align: center;
           margin-left: auto;
           margin-right: auto;
-          font-size: 1.5em; }
+          font-size: 1em; }
       .view_tasks_section .swiper-wrapper .task_wrapper .bottom_task_section div {
         height: auto;
         width: auto; }
+      .view_tasks_section .swiper-wrapper .task_wrapper .delete_task_section {
+        display: flex;
+        justify-content: flex-end; }
+        .view_tasks_section .swiper-wrapper .task_wrapper .delete_task_section button {
+          border-radius: 50%;
+          background: inherit;
+          border: none;
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13); }
+          .view_tasks_section .swiper-wrapper .task_wrapper .delete_task_section button img {
+            padding: 0.5em;
+            height: 2em;
+            width: 2em; }
 
 .full_overlay_container {
   display: grid;
@@ -185,10 +246,18 @@ header {
     grid-template-rows: 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px; }
-    .full_overlay_container .cancel_navigation_section .status_updates_wrapper .status_message {
-      padding-left: 1em;
-      font-size: 14px;
-      color: red; }
+    .full_overlay_container .cancel_navigation_section .status_updates_wrapper {
+      padding-top: 1em; }
+      .full_overlay_container .cancel_navigation_section .status_updates_wrapper .status_message {
+        padding-left: 1em;
+        font-size: 16px;
+        color: red; }
+        @media screen and (min-width: 900px) {
+          .full_overlay_container .cancel_navigation_section .status_updates_wrapper .status_message {
+            font-size: 32px; } }
+        @media screen and (min-width: 376px) and (max-width: 900px) {
+          .full_overlay_container .cancel_navigation_section .status_updates_wrapper .status_message {
+            font-size: 24px; } }
     .full_overlay_container .cancel_navigation_section button {
       padding: 0.5em;
       background: white;
@@ -199,7 +268,8 @@ header {
       border: none;
       padding: 0;
       width: auto;
-      height: auto; }
+      height: auto;
+      margin-top: auto; }
       .full_overlay_container .cancel_navigation_section button img {
         width: 1em;
         height: 1em;
@@ -212,6 +282,13 @@ header {
     grid-row-gap: 0px;
     height: auto;
     margin: 1em; }
+    @media screen and (min-width: 375px) and (max-width: 900px) {
+      .full_overlay_container .edit_task_section {
+        margin: 2em; } }
+    @media screen and (min-width: 900px) {
+      .full_overlay_container .edit_task_section {
+        margin-left: auto;
+        margin-right: auto; } }
     .full_overlay_container .edit_task_section div {
       display: grid;
       grid-template-columns: 1fr;
@@ -228,6 +305,16 @@ header {
       line-height: 1em;
       resize: none;
       background-color: white; }
+    .full_overlay_container .edit_task_section textarea {
+      padding-top: 0.5em; }
+    .full_overlay_container .edit_task_section textarea,
+    .full_overlay_container .edit_task_section input,
+    .full_overlay_container .edit_task_section select {
+      border: 1px solid black;
+      padding-left: 1em; }
+    @media screen and (min-width: 900px) {
+      .full_overlay_container .edit_task_section {
+        width: 70%; } }
   .full_overlay_container div {
     height: -webkit-fit-content;
     height: -moz-fit-content;
@@ -244,7 +331,8 @@ header {
       border: none;
       font-size: 16px;
       border: 1px solid black;
-      color: black; }
+      color: black;
+      padding: 1em; }
 
 .active_footer {
   padding: 1em;
@@ -269,7 +357,7 @@ footer {
       font-size: 16px;
       border: 1px solid black;
       color: black; }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         footer .save_section button {
           font-size: 24px; } }
   footer .add_item_wrapper {

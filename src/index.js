@@ -5,8 +5,32 @@ $(document).ready(function () {
   const templateButton = (name) => {
     return `<div class="module_name ${name}_wrapper">
     <button class="sub">${name}</button>
+    <button name="${name}" class="delete_button">
+      <img src="./assets/icons/delete.svg"/>
+    </button>
   </div>`;
   };
+
+  $(".module_selection").on("click", ".delete_button", function () {
+    const name = $(this).attr("name");
+
+    fetch("/dropmod", {
+      headers: {
+        Accept: "application/json;charset=utf-8",
+        "Content-Type": "application/json",
+      },
+      dataType: "json",
+      method: "POST",
+      body: JSON.stringify({ name: `${name}` }),
+    }).then((res) => {
+      if (res.status === 200) {
+        console.log($(this).parent());
+        $(this).parent().css({ display: "none" });
+      } else {
+        console.log("Error");
+      }
+    });
+  });
 
   async function getSubjects() {
     const response = await fetch(`/subjects`, {
@@ -18,13 +42,18 @@ $(document).ready(function () {
       method: "GET",
     });
     const data = await response.json();
-    console.log(data);
 
     for (let i = 0; i < data.length; i++) {
-      $(".module_selection").append(
-        templateButton(
-          data[i].replace("./db_files/", "").replace("_tasks.db", "").trim()
-        )
+      console.log(data[i]);
+      if (data[i] != "./db_files/_tasks.db") {
+        $(".module_selection").append(
+          templateButton(
+            data[i].replace("./db_files/", "").replace("_tasks.db", "").trim()
+          )
+        );
+      }
+      console.log(
+        data[i].replace("./db_files/", "").replace("_tasks.db", "").trim()
       );
     }
   }
@@ -43,49 +72,42 @@ $(document).ready(function () {
     });
 
     const data = await response.json();
-    if (data["code"] == "found" || $('.module_search').val().trim()==="") {
-      $(".add_button").css({ display: "none" });
+    if (data["code"] == "found" || $(".module_search").val().trim() === "") {
+      $(".add_button_mod").css({ display: "none" });
     } else {
-      $(".add_button").css({ display: "unset" });
+      $(".add_button_mod").css({ display: "unset" });
     }
   }
-
-  
 
   $(".module_search").keyup(function () {
     const searchValue = $(this).val().trim();
     search(searchValue);
   });
 
-$(".add_button").click(function () {
-  const searchValue = $(".module_search").val().trim();
-  fetch("/add", {
-    headers: {
-      Accept: "application/json;charset=utf-8",
-      "Content-Type": "application/json",
-    },
-    dataType: "json",
-    method: "POST",
-    body: JSON.stringify({ subject: `${searchValue}` }),
-  }).then((res)=>{
-    if(res.status===200){
-      $('.refresh_message span').html("Refresh required");
-    }else if(res.status===500){
-      $('.refresh_message span').html("Maxmimum subjects reached");
-    }
+  $(".add_button_mod").click(function () {
+    const searchValue = $(".module_search").val().trim();
+    fetch("/add", {
+      headers: {
+        Accept: "application/json;charset=utf-8",
+        "Content-Type": "application/json",
+      },
+      dataType: "json",
+      method: "POST",
+      body: JSON.stringify({ subject: `${searchValue}` }),
+    }).then((res) => {
+      if (res.status === 200) {
+        $(".refresh_message span").html("Refresh to see updates");
+      } else if (res.status === 500) {
+        $(".refresh_message span").html("Maxmimum subjects reached");
+      }
+    });
   });
-
-
-
-
-});
 
   let mySwiper = new Swiper(".swiper-container", {
     slidesPerView: 1,
-    spaceBetween: 0,
+    spaceBetween: 5,
     breakpoints: {
-      // when window width is >= 320px
-      801: {
+      900: {
         slidesPerView: 3,
       },
       // when window width is >= 480px
@@ -93,15 +115,8 @@ $(".add_button").click(function () {
         slidesPerView: 2,
       },
       // when window width is >= 640px
-      500: {
-        slidesPerView: 1,
-      },
     },
   });
-
-  //Datetime picker from flactpickr
-  let date = new Date();
-  date.setMinutes(date.getMinutes() + 1);
 
   const defaultState = {
     enableTime: true,
@@ -109,42 +124,61 @@ $(".add_button").click(function () {
     altInput: true,
     spaceBetween: 10,
     minDate: "today",
-    minTime: date,
     disableMobile: true,
   };
 
   $(".datepicker").flatpickr(defaultState);
 
   //Once you click on a module to view the tasks of of
-  $(".module_selection").on("click", "button", function () {
+  $(".module_selection").on("click", ".sub", function () {
     var name = $(this).text().trim();
+    updateTasks(name);
     //Hide everything except the view task sectiona nd the add item wrapper
-    $(
-      ".module_selection_section, .full_screen_overlay, header"
-    ).css({
+    $(".module_selection_section, .full_screen_overlay, header").css({
       display: "none",
     });
 
     $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
     //Update status message with the name of the module
-    $(".status_message")
-      .html(name)
-      .css({ color: "black", "font-size": "24px" })
-      .parent()
-      .css({ "text-align": "center" });
+    $(".status_message").html(name).parent().css({ "text-align": "center" });
+
+    //if one chooses to delete a task
+    $(".swiper-wrapper").on("click", "button", function (data) {
+      const id = $(this).attr("name");
+      fetch(`/delete`, {
+        method: "POST",
+        body: JSON.stringify({ name: name, id: id }),
+        headers: {
+          Accept: "application/json;charset=utf-8",
+          "Content-Type": "application/json",
+        },
+        dataType: "json",
+      }).then((res) => {
+        $(`.task_wrapper_${id}`).parent().animate(
+          {
+            position: "relative",
+            top: "-100%",
+            display: "none",
+          },
+          500
+        );
+      });
+    });
+
+    //const fontsize = $(".status_message").css("font-size");
     //If one chooses to add a task hide and show required divs
     $(".add_button").click(function () {
       $(".full_overlay_container").show();
       $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
       $(".full_overlay_container").css({ "z-index": 99999 });
+      $(".status_message").css({ color: "black"});
       $(".character_count").html(" ");
 
       //If closing the add task section
       $(".close_button").click(function () {
-        $(".status_message").css({ "font-size": "24px" });
         $(".full_overlay_container").css({ display: "none" });
         $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
-        $(".status_message").html(name);
+        $(".status_message").html(name).css({color:"black"});
       });
     });
 
@@ -154,13 +188,13 @@ $(".add_button").click(function () {
       $(".status_message").html(`<b>MODULE</b> MANAGER`);
       const currentTime = new Date();
       const displayTime = `${currentTime.getHours()}: ${currentTime.getMinutes()}`;
-      location.reload();
       $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
       $(".module_selection_section, header").removeAttr("style");
       $(".time_refreshed").html(displayTime);
+      location.reload();
     });
 
-    updateTasks(name);
+
 
     var color = "";
     $(".task_desc_inp").keyup(function () {
@@ -181,8 +215,15 @@ $(".add_button").click(function () {
         .html(`${remainingCharacters}`)
         .css({ color: `${color}`, "font-size": "14px" });
     });
+
+    $(".task_desc_inp").focusout(function () {
+      $(".character_count").html(" ");
+    });
+
     //Save task button
     $(".save_task").click(function () {
+      $(".refresh_message span").html("Refresh required");
+
       const taskp = (str) => {
         if (str == "high") {
           return 1;
@@ -202,9 +243,11 @@ $(".add_button").click(function () {
       };
 
       if (Object.values(Task).includes("")) {
-        $(".status_message").html(
-          `Enter information into all required fields : <ul class="required_fields"></ul>`
-        );
+        $(".status_message")
+          .html(
+            `Enter information into all required fields : <ul class="required_fields"></ul>`
+          )
+          .css({color: "red" });
         for (let i = 0; i <= 4; i++) {
           if (Object.values(Task)[i] == "") {
             const niceDisplay = {
@@ -243,8 +286,9 @@ $(".add_button").click(function () {
           .then((res) => {
             if (res.status == "200") {
               $(".status_message")
-                .html(`You just added a task called: <b>${Task.taskName}</b>`)
-                .css({ "font-size": "16px" });
+                .html(`Task added: <b>${Task.taskName}</b>`)
+                .css({ color: "black" });
+              $(".character_count").html(" ");
             } else if (res.status == "404") {
               $(".status_message").html(`Not Found Error: Please Try Again`);
             }
@@ -301,7 +345,7 @@ $(".add_button").click(function () {
 
       return `
   <div class="sliding_section swiper-slide">
-  <div class="task_wrapper">
+  <div class="task_wrapper task_wrapper_${object._id}">
       <div class="top_task_section">
           <div class="task_name_wrap">
             ${object.taskName}
@@ -320,6 +364,10 @@ $(".add_button").click(function () {
           <p class="task_description">
             ${object.description}
           </p>
+      </div>
+
+      <div class="delete_task_section">
+        <button class="delete_task" name="${object._id}"><img src="./assets/icons/delete.svg"/></button>
       </div>
   </div>
 
@@ -356,8 +404,6 @@ $(".add_button").click(function () {
           return;
         }
       }
-
-      console.log(displayMap);
     }
   });
 });

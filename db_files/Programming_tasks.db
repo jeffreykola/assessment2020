@@ -1,6 +1,1 @@
-{"taskName":"Fix issue of character count","description":"Character count does not clear after consecutively adding a task ","priority":1,"date":"2020-04-02T13:50:00.000Z","module":"Programming","_id":"JQVFTNJfw8Wk6Jku"}
-{"taskName":"Responsive issue","description":"Need to fix the responsiveness issue on desktop with the slidePerView property","priority":1,"date":"2020-04-03T21:24:10.000Z","module":"Programming","_id":"OK0PQaw2zPZA8c7h"}
-{"taskName":"Escape html","description":"Escape html in the front-end by using the replace statement","priority":0,"date":"2020-04-03T14:00:00.000Z","module":"Programming","_id":"VIzUnADbgkj1YBHA"}
-{"taskName":"Jest cases","description":"Make sure you have done at least  3 jest cases today","priority":1,"date":"2020-04-02T13:50:00.000Z","module":"Programming","_id":"VOZUJiRXAIyqwKJi"}
-{"taskName":"Hello","description":"Hrllo","priority":1,"date":"2020-04-02T13:10:33.000Z","module":"Programming","_id":"XfkIBLT1WOplfeDA"}
-{"taskName":"Desktop repsonsiveness","description":"Change desktop view, maybe move items towards center. See how other websites do it. Thinking about having multiple views on the same page","priority":1,"date":"2020-04-11T12:45:56.000Z","module":"Programming","_id":"d0eloYugALZmRLgn"}
+{"taskName":"Animations","description":"Add some animations to the web application","priority":1,"date":"2020-04-20T11:00:00.000Z","module":"Programming","_id":"sstJ17sNQVyZsMNP"}
