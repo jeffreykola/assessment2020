@@ -37,6 +37,25 @@ body {
   padding: 1em;
 }
 
+.action_tray_show{
+  display: flex !important;
+  justify-content: space-around;
+  -webkit-transition: left 0.2 ease;
+  transition: left 0.2 ease;
+  
+}
+
+.hide{
+  display: none;
+}
+.change_grid_display{
+  grid-template-columns: 0.3fr 0.7fr !important;
+}
+
+.change_content_j{
+  -webkit-box-pack: space-evenly;
+          justify-content: space-evenly;
+}
 //HEADER
 header {
   padding: 1em;
@@ -46,8 +65,8 @@ header {
   grid-row-gap: 0px;
   grid-column-gap: 0.2em;
   font-size: 16px;
-  background: #F3F3F3;
-  @media screen and (min-width: 376px) and (max-width:900px) {
+  background: #f3f3f3;
+  @media screen and (min-width: 376px) and (max-width: 900px) {
     font-size: 18px;
   }
 
@@ -61,9 +80,10 @@ header {
     width: 100%;
   }
 
-  
-  .refresh_message{
+  .refresh_message {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-pack: end;
     justify-content: flex-end;
   }
 }
@@ -77,8 +97,6 @@ header {
 }
 
 .active_display {
-
-
   .module_selection_section {
     display: grid;
     grid-template-columns: 1fr;
@@ -87,132 +105,168 @@ header {
     grid-row-gap: 0px;
     padding: 1em;
 
-
-
     .action_tray {
       margin-top: auto;
       margin-bottom: auto;
       display: -webkit-box;
       display: flex;
+      -webkit-box-pack: center;
       justify-content: center;
       text-align: center;
 
-      input{
+      input {
         background: #eeeeee;
         padding-left: 1em;
         height: 2em;
-        border:none;
+        border: none;
         width: 70%;
         border-radius: 36px;
         margin-right: 0.5em;
-
-        @media screen and (min-width: 376px) and (max-width:900px){
-          font-size: 20px;
-        }
+        font-size: 20px;
 
         @media screen and (min-width: 900px) {
           font-size: 24px;
         }
       }
 
-      button{
+      button {
         background: white;
         padding: 0.5em;
+        height: -webkit-fit-content;
+        height: -moz-fit-content;
         height: fit-content;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
         width: fit-content;
-        border:none;
+        border: none;
         display: none;
 
-        img{
-          height:1em;
-          width: 1em;
+        img {
+          height: 1.5em;
+          width: 1.5em;
 
-        @media screen and (min-width: 376px) and (max-width:900px){
-          height: 2em;
-          width: 2em;
-        }
+          @media screen and (min-width: 376px) and (max-width: 900px) {
+            height: 2em;
+            width: 2em;
+          }
 
-        @media screen and (min-width: 900px) {
-          height: 2.5em;
-          width: 2.5em;
-        }
-        }
-      }
-
-      }
-      margin-bottom: 1em;
-    }
-    .module_section {
-     display: block;
-     
-      //need to change styling of checkbox
-
-
-    }
-    .module_selection {
-      grid-area: 1 / 2 / 2 / 3;
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(6, 1fr);
-      grid-column-gap: 0px;
-      grid-row-gap: 0px;
-      text-align: center;
-      height: 80vh;
-      div {
-        margin:auto auto auto auto;
-        display: grid;
-        grid-template-columns: 2fr 0.3fr;
-        grid-template-rows: 1fr;
-        grid-column-gap: 1em;
-        grid-row-gap: 0px;
-        width: 70%;
-        @media screen and (min-width: 900px) {
-          
-        }
-        .sub {
-          background: white;
-          padding: 0.5em;
-          margin-right: 1em;
-          font-size: 14px;
-          border:none;
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
-          width: 100%;
-          border-radius: 36px;
           @media screen and (min-width: 900px) {
-              font-size: 24px;
-              padding: 1em;
-          }
-
-          @media screen and (min-width: 376px) and (max-width: 900px){
-            font-size: 20px;
+            height: 2.5em;
+            width: 2.5em;
           }
         }
-
-        
-          justify-content: flex-end;
-          .delete_button{
-            margin-top: auto;
-            background: white;
-            border:none;
-            margin-bottom: auto;
-            margin-left: auto;
-            justify-content: flex-end;
-            padding: 1em;
-            img{
-              height: 1.5em;
-              width: 1.5em;
-              
-              @media screen and  (min-width:900px){
-                height:2em;
-                width: 2em;
-              }
-            }
-          }
       }
+    }
+    margin-bottom: 1em;
+  }
+  .module_section {
+    display: block;
+
+    //need to change styling of checkbox
+  }
+  .module_selection {
+    grid-area: 1 / 2 / 2 / 3;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    text-align: center;
+    height: 80vh;
+
+    
+    .module_action_tray{
+      display: none;
+
+      @media screen and (min-width:800px){
+        display: flex;
+      }
+
+      input{
+        border:1px solid black;
+      }
+      
+      .update_button{
+        height:auto ;
+        width: auto;
+        background:white;
+        border:none;
+      }
+      img{
+        height: 1em;
+        width: 1em;
+      }
+    } 
+
+
+    .module_name {
+      margin: auto auto auto auto;
+      display: grid;
+      grid-template-columns: 2fr 0.3fr;
+      grid-template-rows: 1fr;
+      grid-column-gap: 1em;
+      grid-row-gap: 0px;
+      width: 70%;
+      @media screen and (min-width: 900px) {
+      }
+
+
+    
+      .sub {
+        background: white;
+        padding: 0.5em;
+        margin-right: 1em;
+        font-size: 14px;
+        border: none;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+        width: 100%;
+        border-radius: 36px;
+        @media screen and (min-width: 900px) {
+          font-size: 24px;
+          padding: 1em;
+        }
+
+        @media screen and (min-width: 376px) and (max-width: 900px) {
+          font-size: 20px;
+        }
+
+      }
+
+      -webkit-box-pack: end;
+
+      justify-content: flex-end;
+      .delete_button, .edit_button{
+        margin-top: auto;
+        background: white;
+        border: none;
+        margin-bottom: auto;
+        margin-left: auto;
+        -webkit-box-pack: end;
+        justify-content: flex-end;
+        padding: 1em;
+        img {
+          height: 1.5em;
+          width: 1.5em;
+
+          @media screen and (min-width: 900px) {
+            height: 2em;
+            width: 2em;
+          }
+        }
+      }
+    }
+    .view_options{
+      height: 1.5em;
+      width: 1.5em;
+      margin-bottom: auto;
+      margin-top:auto;
+
+      @media screen and (min-width:800px){
+        display:none;
+      }
+    }
   }
 }
-
-
 
 //VIEW TASKS
 .view_tasks_section {
@@ -231,13 +285,13 @@ header {
     padding-bottom: 1em;
     vertical-align: middle;
     font-size: 1em;
-    .status_message{
-      color:black;
+    .status_message {
+      color: black;
       font-size: 16px;
       @media screen and (min-width: 900px) {
         font-size: 32px;
       }
-      @media screen and (min-width: 376px) and (max-width:900px)  {
+      @media screen and (min-width: 376px) and (max-width: 900px) {
         font-size: 24px;
       }
     }
@@ -297,14 +351,15 @@ header {
         display: flex;
         //Text needs to be centrally aligned
         text-align: center;
+        -webkit-box-align: center;
         align-items: center;
         font-size: 24px;
         font-weight: bold;
-        p{
+        p {
           text-align: center;
           margin-left: auto;
           margin-right: auto;
-          font-size:1em;
+          font-size: 1em;
         }
       }
       .bottom_task_section {
@@ -314,15 +369,17 @@ header {
         }
       }
 
-      .delete_task_section{
+      .delete_task_section {
+        display: -webkit-box;
         display: flex;
+        -webkit-box-pack: end;
         justify-content: flex-end;
-        button{
+        button {
           border-radius: 50%;
           background: inherit;
-          border:none;
+          border: none;
           box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
-          img{
+          img {
             padding: 0.5em;
             height: 2em;
             width: 2em;
@@ -359,13 +416,10 @@ header {
         @media screen and (min-width: 900px) {
           font-size: 32px;
         }
-        @media screen and (min-width: 376px) and (max-width:900px)  {
+        @media screen and (min-width: 376px) and (max-width: 900px) {
           font-size: 24px;
         }
-        
       }
-
-
     }
 
     button {
@@ -380,7 +434,7 @@ header {
       padding: 0;
       width: auto;
       height: auto;
-      margin-top:auto;
+      margin-top: auto;
     }
   }
   .edit_task_section {
@@ -391,14 +445,13 @@ header {
     grid-row-gap: 0px;
     height: auto;
     margin: 1em;
-    @media screen and (min-width:375px) and (max-width:900px){
-      margin:2em;
-     }
+    @media screen and (min-width: 375px) and (max-width: 900px) {
+      margin: 2em;
+    }
 
-
-    @media screen and (min-width:900px){
-     margin-left:auto;
-     margin-right: auto;
+    @media screen and (min-width: 900px) {
+      margin-left: auto;
+      margin-right: auto;
     }
     div {
       display: grid;
@@ -419,18 +472,18 @@ header {
       background-color: white;
     }
 
-    textarea{
+    textarea {
       padding-top: 0.5em;
     }
 
     textarea,
     input,
-    select{
-      border:1px solid black;
+    select {
+      border: 1px solid black;
       padding-left: 1em;
     }
 
-    @media screen and (min-width:900px){
+    @media screen and (min-width: 900px) {
       width: 70%;
     }
   }
@@ -471,12 +524,13 @@ footer {
     -webkit-box-pack: end;
     button {
       @include buttonDesign();
-            @media screen and (min-width: 900px) {
-              font-size: 24px;
-            }
+      @media screen and (min-width: 900px) {
+        font-size: 24px;
+      }
     }
   }
   .add_item_wrapper {
+    display: -webkit-box;
     display: flex;
     justify-content: space-around;
     button {

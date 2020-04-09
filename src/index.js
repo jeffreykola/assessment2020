@@ -4,12 +4,74 @@ $(document).ready(function () {
 
   const templateButton = (name) => {
     return `<div class="module_name ${name}_wrapper">
-    <button class="sub">${name}</button>
-    <button name="${name}" class="delete_button">
-      <img src="./assets/icons/delete.svg"/>
-    </button>
+    <button class="sub module_${name}">${name}</button>
+    <img class="view_options" name="${name}" src="./assets/icons/options.svg"/>
+    <div class="module_action_tray action_tray_${name}">
+      <button name="${name}" class="delete_button">
+        <img src="./assets/icons/delete.svg"/>
+      </button>
+      <button name=${name} class="edit_button">
+        <img src="./assets/icons/edit.svg"/>
+      </button>
+    </div>
   </div>`;
   };
+
+
+
+  $(".module_selection").on("click", ".view_options", function () {
+    const name = $(this).attr("name");
+    console.log(name);
+
+    $(`.${name}_wrapper`).toggleClass('change_grid_display');
+
+    //$(`.action_tray_${name}`).animate({display:"flex"});
+    $(`.module_${name}`).toggleClass('hide');
+
+    $(`.action_tray_${name}`).toggleClass("action_tray_show");
+    
+  });
+
+  $('.module_selection').on("click", '.edit_button', function(){
+    const name = $(this).attr('name');
+
+    const previousState = $(`.action_tray_${name}`).html();
+
+    $(`.action_tray_${name}`).html(`<input name=${name} class="update_name" maxlength="24" value =${name} type="text"/> <button class="update_button"><img src="./assets/icons/done.svg"/></button>`);
+
+    $(`.action_tray_${name} .update_name`).keyup(function(){
+      const updateValue = $(this).val().trim();
+      if(updateValue === "" || updateValue === name){
+        $(`.action_tray_${name} .update_button`).attr('disabled', 'true');
+      }else{
+        $(`.action_tray_${name} .update_button`).removeAttr('disabled');
+
+        $(`.action_tray_${name} .update_button`).click(function(){
+          let updateValue = $(`.action_tray_${name} .update_name`).val();
+
+          fetch('/updatemod', {
+            headers: {
+              Accept: "application/json;charset=utf-8",
+              "Content-Type": "application/json",
+            },
+            dataType: "json",
+            method: "POST",
+            body: JSON.stringify({ originalName: `${name}`, newFileName: `${updateValue}` })
+          });
+
+          $('.refresh_message span').html('Refresh required');
+
+          $(`.action_tray_${name}`).html(previousState);
+        });
+      }
+
+      //console.log(updateValue);
+      
+    });
+    
+  });
+
+  
 
   $(".module_selection").on("click", ".delete_button", function () {
     const name = $(this).attr("name");
@@ -72,7 +134,7 @@ $(document).ready(function () {
     });
 
     const data = await response.json();
-    if (data["code"] == "found" || $(".module_search").val().trim() === "") {
+    if (data["status"] == "found" || $(".module_search").val().trim() === "") {
       $(".add_button_mod").css({ display: "none" });
     } else {
       $(".add_button_mod").css({ display: "unset" });
@@ -93,11 +155,11 @@ $(document).ready(function () {
       },
       dataType: "json",
       method: "POST",
-      body: JSON.stringify({ subject: `${searchValue}` }),
+      body: JSON.stringify({ module: `${searchValue}` }),
     }).then((res) => {
       if (res.status === 200) {
         $(".refresh_message span").html("Refresh to see updates");
-      } else if (res.status === 500) {
+      } else if (res.status === 403) {
         $(".refresh_message span").html("Maxmimum subjects reached");
       }
     });
@@ -171,14 +233,14 @@ $(document).ready(function () {
       $(".full_overlay_container").show();
       $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
       $(".full_overlay_container").css({ "z-index": 99999 });
-      $(".status_message").css({ color: "black"});
+      $(".status_message").css({ color: "black" });
       $(".character_count").html(" ");
 
       //If closing the add task section
       $(".close_button").click(function () {
         $(".full_overlay_container").css({ display: "none" });
         $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
-        $(".status_message").html(name).css({color:"black"});
+        $(".status_message").html(name).css({ color: "black" });
       });
     });
 
@@ -193,8 +255,6 @@ $(document).ready(function () {
       $(".time_refreshed").html(displayTime);
       location.reload();
     });
-
-
 
     var color = "";
     $(".task_desc_inp").keyup(function () {
@@ -247,7 +307,7 @@ $(document).ready(function () {
           .html(
             `Enter information into all required fields : <ul class="required_fields"></ul>`
           )
-          .css({color: "red" });
+          .css({ color: "red" });
         for (let i = 0; i <= 4; i++) {
           if (Object.values(Task)[i] == "") {
             const niceDisplay = {
