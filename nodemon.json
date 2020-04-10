@@ -1,4 +1,4 @@
 {
-    "watch": ["server.js", "db_files", "./index.html"],
+    "watch": ["server.js", "./db_files", "./index.html"],
     "ext": "js,db,html"
   }

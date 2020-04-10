@@ -37,6 +37,25 @@ body {
   padding: 1em;
 }
 
+@mixin inputStyle {
+  background: #eeeeee;
+  padding-left: 1em;
+  height: 2em;
+  border: none;
+  width: 70%;
+  border-radius: 36px;
+  margin-right: 0.5em;
+  font-size: 16px;
+
+  @media screen and (min-width:376px) and (max-width:800px){
+      font-size: 24px;
+  }
+
+  @media screen and (min-width:800px){
+    font-size: 26px;
+}
+}
+
 .action_tray_show{
   display: flex !important;
   justify-content: space-around;
@@ -49,7 +68,7 @@ body {
   display: none;
 }
 .change_grid_display{
-  grid-template-columns: 0.3fr 0.7fr !important;
+  grid-template-columns: 0.1fr 1.5fr !important;
 }
 
 .change_content_j{
@@ -66,11 +85,11 @@ header {
   grid-column-gap: 0.2em;
   font-size: 16px;
   background: #f3f3f3;
-  @media screen and (min-width: 376px) and (max-width: 900px) {
+  @media screen and (min-width: 376px) and (max-width: 800px) {
     font-size: 18px;
   }
 
-  @media screen and (min-width: 900px) {
+  @media screen and (min-width: 800px) {
     font-size: 24px;
   }
   div {
@@ -115,18 +134,7 @@ header {
       text-align: center;
 
       input {
-        background: #eeeeee;
-        padding-left: 1em;
-        height: 2em;
-        border: none;
-        width: 70%;
-        border-radius: 36px;
-        margin-right: 0.5em;
-        font-size: 20px;
-
-        @media screen and (min-width: 900px) {
-          font-size: 24px;
-        }
+        @include inputStyle();
       }
 
       button {
@@ -145,12 +153,12 @@ header {
           height: 1.5em;
           width: 1.5em;
 
-          @media screen and (min-width: 376px) and (max-width: 900px) {
+          @media screen and (min-width: 376px) and (max-width: 800px) {
             height: 2em;
             width: 2em;
           }
 
-          @media screen and (min-width: 900px) {
+          @media screen and (min-width: 800px) {
             height: 2.5em;
             width: 2.5em;
           }
@@ -183,7 +191,9 @@ header {
       }
 
       input{
-        border:1px solid black;
+        margin-top:auto ;
+        margin-bottom: auto;
+        @include inputStyle();
       }
       
       .update_button{
@@ -195,6 +205,12 @@ header {
       img{
         height: 1em;
         width: 1em;
+
+        @media screen and (min-width:800px){
+          height: 2em;
+          width: 2em;
+        }
+
       }
     } 
 
@@ -207,7 +223,9 @@ header {
       grid-column-gap: 1em;
       grid-row-gap: 0px;
       width: 70%;
-      @media screen and (min-width: 900px) {
+
+      @media screen and (min-width: 800px) {
+        grid-template-columns: 0.7fr 0.5fr;
       }
 
 
@@ -221,12 +239,12 @@ header {
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
         width: 100%;
         border-radius: 36px;
-        @media screen and (min-width: 900px) {
+        @media screen and (min-width: 800px) {
           font-size: 24px;
           padding: 1em;
         }
 
-        @media screen and (min-width: 376px) and (max-width: 900px) {
+        @media screen and (min-width: 376px) and (max-width: 800px) {
           font-size: 20px;
         }
 
@@ -248,7 +266,7 @@ header {
           height: 1.5em;
           width: 1.5em;
 
-          @media screen and (min-width: 900px) {
+          @media screen and (min-width: 800px) {
             height: 2em;
             width: 2em;
           }
@@ -256,8 +274,8 @@ header {
       }
     }
     .view_options{
-      height: 1.5em;
-      width: 1.5em;
+      height: 1em;
+      width: 1em;
       margin-bottom: auto;
       margin-top:auto;
 
@@ -268,6 +286,7 @@ header {
   }
 }
 
+
 //VIEW TASKS
 .view_tasks_section {
   display: grid;
@@ -275,7 +294,7 @@ header {
   grid-template-rows: 0.1fr 2fr 0.1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  @media screen and (min-width: 900px) {
+  @media screen and (min-width: 800px) {
     grid-row-gap: 4em;
   }
 
@@ -288,10 +307,10 @@ header {
     .status_message {
       color: black;
       font-size: 16px;
-      @media screen and (min-width: 900px) {
+      @media screen and (min-width: 800px) {
         font-size: 32px;
       }
-      @media screen and (min-width: 376px) and (max-width: 900px) {
+      @media screen and (min-width: 376px) and (max-width: 800px) {
         font-size: 24px;
       }
     }
@@ -310,13 +329,13 @@ header {
       margin-top: 10em;
       height: 50vh;
       width: 80vw;
-      @media screen and (min-width: 900px) {
+      @media screen and (min-width: 800px) {
         width: 25vw;
         margin-top: auto;
         margin-bottom: auto;
       }
 
-      @media screen and (min-width: 600px) and (max-width: 900px) {
+      @media screen and (min-width: 600px) and (max-width: 800px) {
         width: 40vw;
       }
 
@@ -413,10 +432,10 @@ header {
         font-size: 16px;
         color: red;
 
-        @media screen and (min-width: 900px) {
+        @media screen and (min-width: 800px) {
           font-size: 32px;
         }
-        @media screen and (min-width: 376px) and (max-width: 900px) {
+        @media screen and (min-width: 376px) and (max-width: 800px) {
           font-size: 24px;
         }
       }
@@ -445,11 +464,11 @@ header {
     grid-row-gap: 0px;
     height: auto;
     margin: 1em;
-    @media screen and (min-width: 375px) and (max-width: 900px) {
+    @media screen and (min-width: 375px) and (max-width: 800px) {
       margin: 2em;
     }
 
-    @media screen and (min-width: 900px) {
+    @media screen and (min-width: 800px) {
       margin-left: auto;
       margin-right: auto;
     }
@@ -469,7 +488,8 @@ header {
       margin: 0px;
       line-height: 1em;
       resize: none;
-      background-color: white;
+      background-color: #eeeeee;
+      border-radius: 36px;
     }
 
     textarea {
@@ -479,13 +499,25 @@ header {
     textarea,
     input,
     select {
-      border: 1px solid black;
+      border: none;
       padding-left: 1em;
     }
 
-    @media screen and (min-width: 900px) {
+    @media screen and (min-width: 800px) {
       width: 70%;
     }
+
+    select{
+      background-color: #eeeeee; 
+      border-radius: 36px;
+      border:0;
+      outline: 0;
+
+      option{
+        border:none;
+      }
+    }
+
   }
   div {
     height: -webkit-fit-content;
@@ -524,7 +556,7 @@ footer {
     -webkit-box-pack: end;
     button {
       @include buttonDesign();
-      @media screen and (min-width: 900px) {
+      @media screen and (min-width: 800px) {
         font-size: 24px;
       }
     }
