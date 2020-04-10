@@ -9,6 +9,10 @@ body {
   overflow-x: hidden;
 }
 
+*:focus{
+  border:none;
+}
+
 @mixin showDivs() {
   div {
     border: 1px solid red;
@@ -47,33 +51,31 @@ body {
   margin-right: 0.5em;
   font-size: 16px;
 
-  @media screen and (min-width:376px) and (max-width:800px){
-      font-size: 24px;
+  @media screen and (min-width: 376px) and (max-width: 800px) {
+    font-size: 24px;
   }
 
-  @media screen and (min-width:800px){
+  @media screen and (min-width: 800px) {
     font-size: 26px;
-}
+  }
 }
 
-.action_tray_show{
+.action_tray_show {
+  display: -webkit-box !important;
   display: flex !important;
   justify-content: space-around;
-  -webkit-transition: left 0.2 ease;
-  transition: left 0.2 ease;
-  
 }
 
-.hide{
+.hide {
   display: none;
 }
-.change_grid_display{
+.change_grid_display {
   grid-template-columns: 0.1fr 1.5fr !important;
 }
 
-.change_content_j{
+.change_content_j {
   -webkit-box-pack: space-evenly;
-          justify-content: space-evenly;
+  justify-content: space-evenly;
 }
 //HEADER
 header {
@@ -182,38 +184,36 @@ header {
     text-align: center;
     height: 80vh;
 
-    
-    .module_action_tray{
+    .module_action_tray {
       display: none;
 
-      @media screen and (min-width:800px){
+      @media screen and (min-width: 800px) {
+        display: -webkit-box;
         display: flex;
       }
 
-      input{
-        margin-top:auto ;
+      input {
+        margin-top: auto;
         margin-bottom: auto;
         @include inputStyle();
       }
-      
-      .update_button{
-        height:auto ;
+
+      .update_button {
+        height: auto;
         width: auto;
-        background:white;
-        border:none;
+        background: white;
+        border: none;
       }
-      img{
+      img {
         height: 1em;
         width: 1em;
 
-        @media screen and (min-width:800px){
+        @media screen and (min-width: 800px) {
           height: 2em;
           width: 2em;
         }
-
       }
-    } 
-
+    }
 
     .module_name {
       margin: auto auto auto auto;
@@ -228,8 +228,6 @@ header {
         grid-template-columns: 0.7fr 0.5fr;
       }
 
-
-    
       .sub {
         background: white;
         padding: 0.5em;
@@ -247,13 +245,13 @@ header {
         @media screen and (min-width: 376px) and (max-width: 800px) {
           font-size: 20px;
         }
-
       }
 
       -webkit-box-pack: end;
 
       justify-content: flex-end;
-      .delete_button, .edit_button{
+      .delete_button,
+      .edit_button {
         margin-top: auto;
         background: white;
         border: none;
@@ -273,19 +271,18 @@ header {
         }
       }
     }
-    .view_options{
+    .view_options {
       height: 1em;
       width: 1em;
       margin-bottom: auto;
-      margin-top:auto;
+      margin-top: auto;
 
-      @media screen and (min-width:800px){
-        display:none;
+      @media screen and (min-width: 800px) {
+        display: none;
       }
     }
   }
 }
-
 
 //VIEW TASKS
 .view_tasks_section {
@@ -507,17 +504,16 @@ header {
       width: 70%;
     }
 
-    select{
-      background-color: #eeeeee; 
+    select {
+      background-color: #eeeeee;
       border-radius: 36px;
-      border:0;
+      border: 0;
       outline: 0;
 
-      option{
-        border:none;
+      option {
+        border: none;
       }
     }
-
   }
   div {
     height: -webkit-fit-content;

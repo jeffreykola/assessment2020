@@ -4,7 +4,7 @@ $(document).ready(function () {
 
   const templateButton = (name) => {
     return `<div class="module_name ${name}_wrapper">
-    <button class="sub module_${name}">${name.split('_').join(' ')}</button>
+    <button class="sub module_${name}">${name.split("_").join(" ")}</button>
     <img class="view_options" name="${name}" src="./assets/icons/options.svg"/>
     <div class="module_action_tray action_tray_${name}">
       <button name="${name}" class="delete_button">
@@ -17,63 +17,69 @@ $(document).ready(function () {
   </div>`;
   };
 
-
-
   $(".module_selection").on("click", ".view_options", function () {
-    let name = $(this).attr("name").trim().split(' ').join('_');
+    let name = $(this).attr("name").trim().split(" ").join("_");
 
     console.log(name);
-    if($(window).width() <= 800){
-      $(`.${name}_wrapper`).toggleClass('change_grid_display');
+    if ($(window).width() <= 800) {
+      $(`.${name}_wrapper`).toggleClass("change_grid_display");
     }
 
     //$(`.action_tray_${name}`).animate({display:"flex"});
 
     console.log(name);
-    $(`.module_${name}`).toggleClass('hide');
+    $(`.module_${name}`).toggleClass("hide");
 
     $(`.action_tray_${name}`).toggleClass("action_tray_show");
-    
   });
 
-  
-
-  $('.module_selection').on("click", '.edit_button', function(){
-
-    const name = $(this).attr('name');
+  $(".module_selection").on("click", ".edit_button", function () {
+    const name = $(this).attr("name");
 
     const previousState = $(`.action_tray_${name}`).html();
 
-    $(`.action_tray_${name}`).html(`<input name=${name} class="update_name" maxlength="22" placeholder ="New.." type="text"/> <button class="update_button"><img src="./assets/icons/done.svg"/></button>`);
+    $(`.action_tray_${name}`).html(
+      `<input name=${name} class="update_name" maxlength="22" placeholder ="New.." type="text"/> <button class="update_button"><img src="./assets/icons/done.svg"/></button>`
+    );
 
-    $(`.module_selection`).on('click',`.action_tray_${name} .update_button`,function(){
+    $(`.module_selection`).on(
+      "click",
+      `.action_tray_${name} .update_button`,
+      function () {
         const updateValue = $(`.action_tray_${name} .update_name`).val().trim();
-        console.log(($('.module_selection').has(`.module_${updateValue}`)).length >= 1);
+        console.log(
+          $(".module_selection").has(`.module_${updateValue}`).length >= 1
+        );
         console.log(updateValue);
-        if(updateValue === "" || updateValue === name.split('_').join(' ') || ($('.module_selection').has(`.module_${updateValue}`).length >= 1) ){
-          $(`.action_tray_${name}`).html(previousState);          
-        }else{
+        if (
+          updateValue === "" ||
+          updateValue === name.split("_").join(" ") ||
+          $(".module_selection").has(`.module_${updateValue}`).length >= 1
+        ) {
+          $(`.action_tray_${name}`).html(previousState);
+        } else {
           //$(`.action_tray_${name} .update_button`).removeAttr('disabled');
-            fetch('/updatemod', {
-              headers: {
-                Accept: "application/json;charset=utf-8",
-                "Content-Type": "application/json",
-              },
-              dataType: "json",
-              method: "POST",
-              body: JSON.stringify({ originalName: `${name.split('_').join(' ')}`, newFileName: `${updateValue}` })
-            });
+          fetch("/updatemod", {
+            headers: {
+              Accept: "application/json;charset=utf-8",
+              "Content-Type": "application/json",
+            },
+            dataType: "json",
+            method: "POST",
+            body: JSON.stringify({
+              originalName: `${name.split("_").join(" ")}`,
+              newFileName: `${updateValue}`,
+            }),
+          });
 
-            $(`.module_${name}`).html(updateValue);
+          $(`.module_${name}`).html(updateValue);
 
-            $('.refresh_message span').html("Refresh to see updates..")
+          $(".refresh_message span").html("Refresh to see updates..");
         }
-
-      });
-      //});
-});
-
-  
+      }
+    );
+    //});
+  });
 
   $(".module_selection").on("click", ".delete_button", function () {
     const name = $(this).attr("name");
@@ -85,7 +91,7 @@ $(document).ready(function () {
       },
       dataType: "json",
       method: "POST",
-      body: JSON.stringify({ name: `${name.split('_').join(' ')}` }),
+      body: JSON.stringify({ name: `${name.split("_").join(" ")}` }),
     }).then((res) => {
       if (res.status === 200) {
         $(`.${name}_wrapper`).empty();
@@ -111,7 +117,12 @@ $(document).ready(function () {
       if (data[i] != "./db_files/_tasks.db") {
         $(".module_selection").append(
           templateButton(
-            data[i].replace("./db_files/", "").replace("_tasks.db", "").trim().split(' ').join('_')
+            data[i]
+              .replace("./db_files/", "")
+              .replace("_tasks.db", "")
+              .trim()
+              .split(" ")
+              .join("_")
           )
         );
       }
@@ -276,6 +287,7 @@ $(document).ready(function () {
         .html(`${remainingCharacters}`)
         .css({ color: `${color}`, "font-size": "14px" });
     });
+
 
     $(".task_desc_inp").focusout(function () {
       $(".character_count").html(" ");

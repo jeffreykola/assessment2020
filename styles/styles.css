@@ -8,11 +8,13 @@ body {
   font-size: 18px;
   overflow-x: hidden; }
 
+*:focus {
+  border: none; }
+
 .action_tray_show {
+  display: -webkit-box !important;
   display: flex !important;
-  justify-content: space-around;
-  -webkit-transition: left 0.2 ease;
-  transition: left 0.2 ease; }
+  justify-content: space-around; }
 
 .hide {
   display: none; }
@@ -126,6 +128,7 @@ header {
     display: none; }
     @media screen and (min-width: 800px) {
       .active_display .module_selection .module_action_tray {
+        display: -webkit-box;
         display: flex; } }
     .active_display .module_selection .module_action_tray input {
       margin-top: auto;
@@ -185,7 +188,8 @@ header {
       @media screen and (min-width: 376px) and (max-width: 800px) {
         .active_display .module_selection .module_name .sub {
           font-size: 20px; } }
-    .active_display .module_selection .module_name .delete_button, .active_display .module_selection .module_name .edit_button {
+    .active_display .module_selection .module_name .delete_button,
+    .active_display .module_selection .module_name .edit_button {
       margin-top: auto;
       background: white;
       border: none;
@@ -194,11 +198,13 @@ header {
       -webkit-box-pack: end;
       justify-content: flex-end;
       padding: 1em; }
-      .active_display .module_selection .module_name .delete_button img, .active_display .module_selection .module_name .edit_button img {
+      .active_display .module_selection .module_name .delete_button img,
+      .active_display .module_selection .module_name .edit_button img {
         height: 1.5em;
         width: 1.5em; }
         @media screen and (min-width: 800px) {
-          .active_display .module_selection .module_name .delete_button img, .active_display .module_selection .module_name .edit_button img {
+          .active_display .module_selection .module_name .delete_button img,
+          .active_display .module_selection .module_name .edit_button img {
             height: 2em;
             width: 2em; } }
   .active_display .module_selection .view_options {
