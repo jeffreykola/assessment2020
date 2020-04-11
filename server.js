@@ -168,6 +168,36 @@ app.post("/updatemod", function (req, res) {
   res.status(200);
 });
 
+app.post('/update', function(req, res){
+  const module = req.body.module;
+  const database = new Datastore(`./db_files/${module}_tasks.db`);
+  const id = req.body.id;
+  database.loadDatabase();
+  let propertyName
+        =updatedValue
+        = "";
+
+        
+  const getPropVal = (propertyName) =>{ 
+    return Array((propertyName, req.body[`${propertyName}`] ? req.body[`${propertyName}`] != "" : ""));
+  }
+
+  for(let i = 0; i < req.body.properties; ++i){
+    if(req.body.properties[i] != ""){
+      const propertyData = getPropVal(req.body.properties[i]);
+      [propertyName, pData] = propertyData;
+      database.update({_id: req.body._id}, {propertyName: pData}, {}, function(err, numReplaced){
+        if(numReplaced){
+          res.status(200);
+        }else{
+          res.send(err).status(500);
+        }
+      });
+    }
+  }
+
+});
+
 const server = app.listen(3000, () =>
   console.log("Server running on port 3000")
 );

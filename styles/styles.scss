@@ -388,8 +388,8 @@ header {
       .delete_task_section {
         display: -webkit-box;
         display: flex;
-        -webkit-box-pack: end;
-        justify-content: flex-end;
+        // -webkit-box-pack: end;
+        // justify-content: flex-end;
         button {
           border-radius: 50%;
           background: inherit;
@@ -400,6 +400,15 @@ header {
             height: 2em;
             width: 2em;
           }
+        }
+        .delete_task{
+          position: relative;
+          right: 0;
+          //background-color:;
+        }
+        .edit_task{
+          position: relative;
+          left:65%;
         }
       }
     }

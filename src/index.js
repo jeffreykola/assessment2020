@@ -2,6 +2,7 @@
 $(document).ready(function () {
   $(".status_message").html(`<b>MODULE</b> MANAGER`);
 
+  
   const templateButton = (name) => {
     return `<div class="module_name ${name}_wrapper">
     <button class="sub module_${name}">${name.split("_").join(" ")}</button>
@@ -16,6 +17,63 @@ $(document).ready(function () {
     </div>
   </div>`;
   };
+
+  
+  const priorityDecoder = (color)=>{
+    if(color==="#ff0000" || color.trim()==="rgb(255, 0, 0)"){
+      return "high";
+    }else if(color==="rgb(255, 191, 0)"){
+      return "medium";
+    }else{
+      return "low";
+    }
+  }
+
+  function showTaskSection(){
+    $(".full_overlay_container").css({ display: "none" });
+    $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
+    $(".status_message").html(name).css({ color: "black" });
+  }
+
+  function showAddSection(defaults=false,options){
+    $(".full_overlay_container").show();
+    $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
+    $(".full_overlay_container").css({ "z-index": 99999 });
+    $(".status_message").css({ color: "black" });
+    $(".character_count").html(" ");
+    $(".task_priority").children().removeAttr("selected");
+    if(defaults){
+      $("#task_name").val(options['taskName']);
+      $(".task_desc_inp").html(options['taskDesc']);  
+      [$(".task_priority").children()].each(element => {
+        if(element.attr()==options['priority']){
+          $(this).attr("selected", "true");
+        }
+      });
+      $("#datepicker").val(options['date']);
+    }
+  }
+
+  function backToOriginalView(){
+    $(".status_message").removeAttr("style");
+    $(".status_message").html(`<b>MODULE</b> MANAGER`);
+    const currentTime = new Date();
+    const displayTime = `${currentTime.getHours()}: ${currentTime.getMinutes()}`;
+    $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
+    $(".module_selection_section, header").removeAttr("style");
+    $(".time_refreshed").html(displayTime);
+    location.reload();
+  }
+
+  $(".back_button").click(function () {
+    backToOriginalView();
+  });
+
+
+  $(".close_button").click(function () {
+    showTaskSection();
+  });
+
 
   $(".module_selection").on("click", ".view_options", function () {
     let name = $(this).attr("name").trim().split(" ").join("_");
@@ -217,7 +275,7 @@ $(document).ready(function () {
     $(".status_message").html(name).parent().css({ "text-align": "center" });
 
     //if one chooses to delete a task
-    $(".swiper-wrapper").on("click", "button", function (data) {
+    $(".swiper-wrapper").on("click", ".delete_task", function (data) {
       const id = $(this).attr("name");
       fetch(`/delete`, {
         method: "POST",
@@ -241,32 +299,14 @@ $(document).ready(function () {
 
     //const fontsize = $(".status_message").css("font-size");
     //If one chooses to add a task hide and show required divs
-    $(".add_button").click(function () {
-      $(".full_overlay_container").show();
-      $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
-      $(".full_overlay_container").css({ "z-index": 99999 });
-      $(".status_message").css({ color: "black" });
-      $(".character_count").html(" ");
 
-      //If closing the add task section
-      $(".close_button").click(function () {
-        $(".full_overlay_container").css({ display: "none" });
-        $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
-        $(".status_message").html(name).css({ color: "black" });
-      });
+
+    $(".add_button").click(function () {
+      showAddSection();
     });
 
     //Go back to the homepage
-    $(".back_button").click(function () {
-      $(".status_message").removeAttr("style");
-      $(".status_message").html(`<b>MODULE</b> MANAGER`);
-      const currentTime = new Date();
-      const displayTime = `${currentTime.getHours()}: ${currentTime.getMinutes()}`;
-      $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
-      $(".module_selection_section, header").removeAttr("style");
-      $(".time_refreshed").html(displayTime);
-      location.reload();
-    });
+
 
     var color = "";
     $(".task_desc_inp").keyup(function () {
@@ -375,7 +415,7 @@ $(document).ready(function () {
       let backgroundColor = "none";
       switch (object.priority) {
         case 1:
-          backgroundColor = "red";
+          backgroundColor = "#ff0000";
           break;
         case 0:
           backgroundColor = "#ffbf00";
@@ -429,7 +469,7 @@ $(document).ready(function () {
       </div>
 
       <div class="middle_task_section">
-          <p class="countdown_timer_${object._id}">
+          <p date="${object.date}" class="countdown_timer_${object._id}">
           </p>
       </div>
 
@@ -441,6 +481,7 @@ $(document).ready(function () {
 
       <div class="delete_task_section">
         <button class="delete_task" name="${object._id}"><img src="./assets/icons/delete.svg"/></button>
+        <button class="edit_task" name="${object._id}"><img src="./assets/icons/edit.svg"/></button>
       </div>
   </div>
 
@@ -478,5 +519,23 @@ $(document).ready(function () {
         }
       }
     }
+  });
+  
+  
+  $('.swiper-wrapper').on('click', '.edit_task', function(){
+    const id = $(this).attr("name");
+    const taskWrapper = `.task_wrapper_${id}`;
+    const taskName = $(`${taskWrapper} .task_name_wrap`).html().trim();
+    const priority = priorityDecoder($(`${taskWrapper} .priority_indicator`).css("background-color"));
+    const taskDesc = $(`${taskWrapper} .task_description`).html().trim();
+    const date = $(`${taskWrapper} .countdown_timer_${id}`).attr("date");
+    //console.log(`taskName, ${taskName}, priority  ${priority},   ${taskDesc}`);
+    //console.log($(`${taskWrapper} .priority_indicator`).css("background-color"));
+    showAddSection(true, {
+      "taskName": taskName,
+      "taskDesc": taskDesc,
+      "priority": priority,
+      "date": date
+    });
   });
 });

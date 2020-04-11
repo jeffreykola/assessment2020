@@ -299,9 +299,7 @@ header {
         width: auto; }
       .view_tasks_section .swiper-wrapper .task_wrapper .delete_task_section {
         display: -webkit-box;
-        display: flex;
-        -webkit-box-pack: end;
-        justify-content: flex-end; }
+        display: flex; }
         .view_tasks_section .swiper-wrapper .task_wrapper .delete_task_section button {
           border-radius: 50%;
           background: inherit;
@@ -311,6 +309,12 @@ header {
             padding: 0.5em;
             height: 2em;
             width: 2em; }
+        .view_tasks_section .swiper-wrapper .task_wrapper .delete_task_section .delete_task {
+          position: relative;
+          right: 0; }
+        .view_tasks_section .swiper-wrapper .task_wrapper .delete_task_section .edit_task {
+          position: relative;
+          left: 65%; }
 
 .full_overlay_container {
   display: grid;
