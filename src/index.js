@@ -22,11 +22,18 @@ $(document).ready(function () {
     }
   };
 
+  $(".add_button").click(function () {  
+    showAddSection();
+    let name = $('.status_message').html();
+    console.log(name);
+    //Save task button
+  });
+
   const templateButton = (name) => {
     return `<div class="module_name ${name}_wrapper">
     <button class="sub module_${name}">${name.split("_").join(" ")}</button>
     <img class="view_options" name="${name}" src="./assets/icons/options.svg"/>
-    <div class="module_action_tray action_tray_${name}">
+    <div class="module_action_tray action_tray_${name} w3-animate-right">
       <button name="${name}" class="delete_button">
         <img src="./assets/icons/delete.svg"/>
       </button>
@@ -40,25 +47,20 @@ $(document).ready(function () {
   function showTaskSection() {
     $(".full_overlay_container").css({ display: "none" });
     $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
-    $(".status_message").html(name).css({ color: "black" });
   }
 
   function showAddSection(defaults = false, options) {
-    $(".full_overlay_container").show();
+    $(".full_overlay_container").css({"display":"grid"});
     $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
-    $(".full_overlay_container").css({ "z-index": 99999 });
+    //$(".full_overlay_container").css({ "z-index": 99999 });
     $('input,textarea').val(" ");
     $(".status_message").css({ color: "black" });
     $(".character_count").html(" ");
     $(".task_priority").children().removeAttr("selected");
 
-    $(".close_button").click(function () {
-      showTaskSection();
-    });
-
 
     if (defaults) {
-      $('.full_screen_overlay').attr("data-target", options['id']);
+      $('.full_overlay_container').attr("data-target", options['id']);
       $("#task_name").html(" ").val(options["taskName"]);
       $(".task_desc_inp").html(" ").val(options["description"]);
       $.each($(".task_priority option"), function () {
@@ -75,11 +77,8 @@ $(document).ready(function () {
   function backToOriginalView() {
     $(".status_message").removeAttr("style");
     $(".status_message").html(`<b>MODULE</b> MANAGER`);
-    const currentTime = new Date();
-    const displayTime = `${currentTime.getHours()}: ${currentTime.getMinutes()}`;
     $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
     $(".module_selection_section, header").removeAttr("style");
-    $(".time_refreshed").html(displayTime);
     window.location = window.location;
   }
 
@@ -90,7 +89,7 @@ $(document).ready(function () {
 
 
   $(".module_selection").on("click", ".view_options", function () {
-    let name = $(this).attr("name").trim().split(" ").join("_");
+    var name = $(this).attr("name").trim().split(" ").join("_");
 
     if ($(window).width() <= 800) {
       $(`.${name}_wrapper`).toggleClass("change_grid_display");
@@ -144,7 +143,6 @@ $(document).ready(function () {
         }
       }
     );
-    //});
   });
 
   $(".module_selection").on("click", ".delete_button", function () {
@@ -161,6 +159,7 @@ $(document).ready(function () {
     }).then((res) => {
       if (res.status === 200) {
         $(`.${name}_wrapper`).empty();
+        $(".refresh_message span").html("Refresh to see updates");
       } else {
         console.log("Error");
       }
@@ -235,7 +234,7 @@ $(document).ready(function () {
       body: JSON.stringify({ module: `${searchValue}` }),
     }).then((res) => {
       if (res.status === 200) {
-        $(".refresh_message span").html("Refresh to see updates");
+        $(".refresh_message span").html("Refresh required");
       } else if (res.status === 403) {
         $(".refresh_message span").html("Maxmimum subjects reached");
       }
@@ -272,6 +271,80 @@ $(document).ready(function () {
   $(".module_selection").on("click", ".sub", function () {
     var name = $(this).text().trim();
     updateTasks(name);
+    $('.add_button').click(function(){
+    $(".done").click(function () {
+      $(".refresh_message span").html("Refresh required");
+      console.log(name);
+      const Task = {
+        taskName: $("#task_name").val().trim(),
+        description: $(".task_desc_inp").val().trim(),
+        priority: taskp($(".task_priority").val()),
+        date: $(".datepicker").val().trim(),
+        module: name,
+      };
+      console.log(Object.values(Task));
+      console.log(Object.values(Task).includes(""))
+
+      if (Object.values(Task).includes("")) {
+        $(".status_message")
+          .html(
+            `Enter information into all required fields : <ul style="font-size:16px;text-decoration:none;list-style-type: none;" class="required_fields"></ul>`
+          )
+          .css({ color: "red" });
+        for (let i = 0; i <= 4; i++) {
+          if (Object.values(Task)[i] == "") {
+            const niceDisplay = {
+              taskName: "Task Name",
+              description: "Task Description",
+              priority: "Task Priority",
+              date: "Deadline",
+            };
+
+            $(".required_fields").append(
+              `<li>${niceDisplay[Object.keys(Task)[i]]}</li>`
+            );
+          }
+        }
+      } else {
+        $("#task_name, .task_desc_inp, .datepicker").val("");
+        $(".datepicker").flatpickr(defaultState);
+
+        //Updating the status message
+
+        //Create json object
+        const taskJSONObject = JSON.stringify(Task);
+        const postOptions = {
+          method: "POST",
+          body: taskJSONObject,
+          dataType: "json",
+          headers: {
+            Accept: "application/json;charset=utf-8",
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        };
+
+        fetch("/", postOptions)
+          .then((res) => {
+            if (res.status == "200") {
+              $(".status_message")
+                .html(`Task added: <b>${Task.taskName}</b>`)
+                .css({ color: "black" });
+              $(".character_count").html(" ");
+            } else if (res.status == "404") {
+              $(".status_message").html(`Not Found Error: Please Try Again`);
+            }
+          })
+          .catch(console.error);
+      }
+    });
+  });
+
+    $(".close_button").click(function () {
+      showTaskSection();
+      $(".status_message").html(name).css({ color: "black" }); 
+    });
+
     //Hide everything except the view task sectiona nd the add item wrapper
     $(".module_selection_section, .full_screen_overlay, header").css({
       display: "none",
@@ -304,82 +377,6 @@ $(document).ready(function () {
       });
     });
 
-
-
-
-    //const fontsize = $(".status_message").css("font-size");
-    //If one chooses to add a task hide and show required divs
-
-    $(".add_button").click(function () {
-      showAddSection();
-
-      //Save task button
-      $(".done").click(function () {
-        $(".refresh_message span").html("Refresh required");
-
-        const Task = {
-          taskName: $("#task_name").val(),
-          description: $(".task_desc_inp").val(),
-          priority: taskp($(".task_priority").val()),
-          date: $(".datepicker").val(),
-          module: name,
-        };
-
-        if (Object.values(Task).includes("")) {
-          $(".status_message")
-            .html(
-              `Enter information into all required fields : <ul class="required_fields"></ul>`
-            )
-            .css({ color: "red" });
-          for (let i = 0; i <= 4; i++) {
-            if (Object.values(Task)[i] == "") {
-              const niceDisplay = {
-                taskName: "Task Name",
-                description: "Task Description",
-                priority: "Task Priority",
-                date: "Deadline",
-              };
-
-              $(".required_fields").append(
-                `<li>${niceDisplay[Object.keys(Task)[i]]}</li>`
-              );
-            }
-          }
-        } else {
-          $("#task_name, .task_desc_inp, .datepicker").val("");
-          $(".datepicker").flatpickr(defaultState);
-
-          //Updating the status message
-
-          //Create json object
-          const taskJSONObject = JSON.stringify(Task);
-          const postOptions = {
-            method: "POST",
-            body: taskJSONObject,
-            dataType: "json",
-            headers: {
-              Accept: "application/json;charset=utf-8",
-              "Content-Type": "application/json",
-              "X-Requested-With": "XMLHttpRequest",
-            },
-          };
-
-          fetch("/", postOptions)
-            .then((res) => {
-              if (res.status == "200") {
-                $(".status_message")
-                  .html(`Task added: <b>${Task.taskName}</b>`)
-                  .css({ color: "black" });
-                $(".character_count").html(" ");
-              } else if (res.status == "404") {
-                $(".status_message").html(`Not Found Error: Please Try Again`);
-              }
-            })
-            .catch(console.error);
-        }
-      });
-
-    });
 
     //Go back to the homepage
 
@@ -480,10 +477,11 @@ $(document).ready(function () {
         <button class="delete_task" name="${object._id}"><img src="./assets/icons/delete.svg"/></button>
         <button class="edit_task" data-target="${object.module}" name="${object._id}"><img src="./assets/icons/edit.svg"/></button>
       </div>
-  </div>
+      </div>
 
-</div>`;
+        </div>`
     };
+
 
     var displayMap = new Map();
     async function updateTasks(name) {
@@ -516,40 +514,49 @@ $(document).ready(function () {
         }
       }
     }
-  });
 
-  $(".swiper-wrapper").on("click", ".edit_task", function () {
-    const id = $(this).attr("name");
-    const module = $(this).attr("data-target");
+
+  $(".swiper-wrapper").on("click", `.edit_task`, function () {
+    let id=
+      module=
+      taskWrapper=
+      taskName=
+      priority=
+      taskDesc=
+      date=
+      taskObject=
+      null;
+
+    id = $(this).attr("name");
+    module = $(this).attr("data-target");
     console.log(module);
-
-    const taskWrapper = `.task_wrapper_${id}`;
-    const taskName = $(`${taskWrapper} .task_name_wrap`).html().trim();
-    const priority = taskp(priorityDecoder(
+    taskWrapper = `.task_wrapper_${id}`;
+    taskName = $(`${taskWrapper} .task_name_wrap`).html().trim();
+    priority = taskp(priorityDecoder(
       $(`${taskWrapper} .priority_indicator`).css("background-color")
     ));
     console.log(priority);
-    const taskDesc = $(`${taskWrapper} .task_description`).html().trim();
-    const date = $(`${taskWrapper} .countdown_timer_${id}`).attr("date");
-    console.log(date);
+    taskDesc = $(`${taskWrapper} .task_description`).html().trim();
+    date = $(`${taskWrapper} .countdown_timer_${id}`).attr("date");
     //console.log(`taskName, ${taskName}, priority  ${priority},   ${taskDesc}`);
     //console.log($(`${taskWrapper} .priority_indicator`).css("background-color"));
-    const taskObject = { taskName: taskName, description: taskDesc, priority: priority, date: date };
-    let optionsObject = taskObject;
+    taskObject = { taskName: taskName, description: taskDesc, priority: priority, date: date };
+    let optionsObject = {};
+    optionsObject = Object.assign(optionsObject, taskObject);
     optionsObject['id'] = id;
     showAddSection(true, optionsObject);
-
-    const previousState = null;
-
-    $('.done').click(function () {
-      //const id = $('.full_screen_overlay').attr("data-target");
+    $('.done').attr("name", `button_${id}`);
+    console.log(id);
+    $(`button[name="button_${id}"]`).click(function () {  
+      const actid = $('.full_overlay_container').attr("data-target");
 
       const updatedTaskName = $(`#task_name`).val().trim();
       const updatedPriority = taskp($('.task_priority').val());
       const updatedTaskDesc = $(`.task_desc_inp`).val().trim();
       const updatedDate = $('.datepicker').val();
 
-      const newTask = { taskName: updatedTaskName, description: updatedTaskDesc, priority: updatedPriority, date: updatedDate };
+      const newTask = { taskName: updatedTaskName, description: updatedTaskDesc, priority: updatedPriority, date: updatedDate};
+
       const changesList = () => {
         let cl = [];
         for (let i = 0; i < recursiveDiff.getDiff(taskObject, newTask).length; i++) {
@@ -561,7 +568,6 @@ $(document).ready(function () {
       const cl = changesList();
       console.log(cl);
 
-
       function changes() {
         if (cl.length >= 1) {
           return true;
@@ -570,17 +576,14 @@ $(document).ready(function () {
       }
 
 
-      if (changes()) {
-        //console.log("here");
+      if (changes() && id===actid) {
         const bodyOfRequest = {};
         let properties = [];
         for (let i = 0; i < cl.length; ++i) {
-          properties.push(cl[i].path[0]);
-          bodyOfRequest[cl[i].path[0]] = newTask[cl[i].path[0]];
+          properties.push(cl[i].path[i]);
+          bodyOfRequest[cl[i].path[i]] = newTask[cl[i].path[i]];
         }
 
-        //console.log(bodyOfRequest);
-        console.log(properties);
         bodyOfRequest['properties'] = properties;
         bodyOfRequest['module'] = module;
         bodyOfRequest['id'] = id;
@@ -597,12 +600,15 @@ $(document).ready(function () {
         }).then((res) => {
           if (res.status === 200) {
             $('.status_message').html(`Saved task : <b>${updatedTaskName}</b>`);
+            $('.refresh_message span').html(`Refresh required`);
+          }else{
+            showTaskSection();
           }
         });
-
       }
-
-
     });
   });
 });
+});
+
+
