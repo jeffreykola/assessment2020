@@ -2,7 +2,26 @@
 $(document).ready(function () {
   $(".status_message").html(`<b>MODULE</b> MANAGER`);
 
-  
+  const priorityDecoder = (color) => {
+    if (color === "#ff0000" || color.trim() === "rgb(255, 0, 0)") {
+      return "high";
+    } else if (color === "rgb(255, 191, 0)") {
+      return "medium";
+    } else {
+      return "low";
+    }
+  };
+
+  const taskp = (str) => {
+    if (str == "high") {
+      return 1;
+    } else if (str == "medium") {
+      return 0;
+    } else {
+      return -1;
+    }
+  };
+
   const templateButton = (name) => {
     return `<div class="module_name ${name}_wrapper">
     <button class="sub module_${name}">${name.split("_").join(" ")}</button>
@@ -18,43 +37,42 @@ $(document).ready(function () {
   </div>`;
   };
 
-  
-  const priorityDecoder = (color)=>{
-    if(color==="#ff0000" || color.trim()==="rgb(255, 0, 0)"){
-      return "high";
-    }else if(color==="rgb(255, 191, 0)"){
-      return "medium";
-    }else{
-      return "low";
-    }
-  }
-
-  function showTaskSection(){
+  function showTaskSection() {
     $(".full_overlay_container").css({ display: "none" });
     $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
     $(".status_message").html(name).css({ color: "black" });
   }
 
-  function showAddSection(defaults=false,options){
+  function showAddSection(defaults = false, options) {
     $(".full_overlay_container").show();
     $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
     $(".full_overlay_container").css({ "z-index": 99999 });
+    $('input,textarea').val(" ");
     $(".status_message").css({ color: "black" });
     $(".character_count").html(" ");
     $(".task_priority").children().removeAttr("selected");
-    if(defaults){
-      $("#task_name").val(options['taskName']);
-      $(".task_desc_inp").html(options['taskDesc']);  
-      [$(".task_priority").children()].each(element => {
-        if(element.attr()==options['priority']){
+
+    $(".close_button").click(function () {
+      showTaskSection();
+    });
+
+
+    if (defaults) {
+      $('.full_screen_overlay').attr("data-target", options['id']);
+      $("#task_name").html(" ").val(options["taskName"]);
+      $(".task_desc_inp").html(" ").val(options["description"]);
+      $.each($(".task_priority option"), function () {
+        if ($(this).val() == options["priority"]) {
           $(this).attr("selected", "true");
         }
       });
-      $("#datepicker").val(options['date']);
+      defaultState["defaultDate"] = options["date"];
+      //redrawing the datepicker
+      $(".datepicker").flatpickr(defaultState);
     }
   }
 
-  function backToOriginalView(){
+  function backToOriginalView() {
     $(".status_message").removeAttr("style");
     $(".status_message").html(`<b>MODULE</b> MANAGER`);
     const currentTime = new Date();
@@ -62,7 +80,7 @@ $(document).ready(function () {
     $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
     $(".module_selection_section, header").removeAttr("style");
     $(".time_refreshed").html(displayTime);
-    location.reload();
+    window.location = window.location;
   }
 
   $(".back_button").click(function () {
@@ -70,22 +88,16 @@ $(document).ready(function () {
   });
 
 
-  $(".close_button").click(function () {
-    showTaskSection();
-  });
-
 
   $(".module_selection").on("click", ".view_options", function () {
     let name = $(this).attr("name").trim().split(" ").join("_");
 
-    console.log(name);
     if ($(window).width() <= 800) {
       $(`.${name}_wrapper`).toggleClass("change_grid_display");
     }
 
     //$(`.action_tray_${name}`).animate({display:"flex"});
 
-    console.log(name);
     $(`.module_${name}`).toggleClass("hide");
 
     $(`.action_tray_${name}`).toggleClass("action_tray_show");
@@ -105,10 +117,6 @@ $(document).ready(function () {
       `.action_tray_${name} .update_button`,
       function () {
         const updateValue = $(`.action_tray_${name} .update_name`).val().trim();
-        console.log(
-          $(".module_selection").has(`.module_${updateValue}`).length >= 1
-        );
-        console.log(updateValue);
         if (
           updateValue === "" ||
           updateValue === name.split("_").join(" ") ||
@@ -171,7 +179,6 @@ $(document).ready(function () {
     const data = await response.json();
 
     for (let i = 0; i < data.length; i++) {
-      console.log(data[i]);
       if (data[i] != "./db_files/_tasks.db") {
         $(".module_selection").append(
           templateButton(
@@ -297,16 +304,84 @@ $(document).ready(function () {
       });
     });
 
+
+
+
     //const fontsize = $(".status_message").css("font-size");
     //If one chooses to add a task hide and show required divs
 
-
     $(".add_button").click(function () {
       showAddSection();
+
+      //Save task button
+      $(".done").click(function () {
+        $(".refresh_message span").html("Refresh required");
+
+        const Task = {
+          taskName: $("#task_name").val(),
+          description: $(".task_desc_inp").val(),
+          priority: taskp($(".task_priority").val()),
+          date: $(".datepicker").val(),
+          module: name,
+        };
+
+        if (Object.values(Task).includes("")) {
+          $(".status_message")
+            .html(
+              `Enter information into all required fields : <ul class="required_fields"></ul>`
+            )
+            .css({ color: "red" });
+          for (let i = 0; i <= 4; i++) {
+            if (Object.values(Task)[i] == "") {
+              const niceDisplay = {
+                taskName: "Task Name",
+                description: "Task Description",
+                priority: "Task Priority",
+                date: "Deadline",
+              };
+
+              $(".required_fields").append(
+                `<li>${niceDisplay[Object.keys(Task)[i]]}</li>`
+              );
+            }
+          }
+        } else {
+          $("#task_name, .task_desc_inp, .datepicker").val("");
+          $(".datepicker").flatpickr(defaultState);
+
+          //Updating the status message
+
+          //Create json object
+          const taskJSONObject = JSON.stringify(Task);
+          const postOptions = {
+            method: "POST",
+            body: taskJSONObject,
+            dataType: "json",
+            headers: {
+              Accept: "application/json;charset=utf-8",
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+            },
+          };
+
+          fetch("/", postOptions)
+            .then((res) => {
+              if (res.status == "200") {
+                $(".status_message")
+                  .html(`Task added: <b>${Task.taskName}</b>`)
+                  .css({ color: "black" });
+                $(".character_count").html(" ");
+              } else if (res.status == "404") {
+                $(".status_message").html(`Not Found Error: Please Try Again`);
+              }
+            })
+            .catch(console.error);
+        }
+      });
+
     });
 
     //Go back to the homepage
-
 
     var color = "";
     $(".task_desc_inp").keyup(function () {
@@ -321,94 +396,16 @@ $(document).ready(function () {
         color = "red";
       }
 
-      console.log(remainingCharacters);
-      console.log(color);
+
       $(".character_count")
         .html(`${remainingCharacters}`)
         .css({ color: `${color}`, "font-size": "14px" });
     });
 
-
     $(".task_desc_inp").focusout(function () {
       $(".character_count").html(" ");
     });
 
-    //Save task button
-    $(".save_task").click(function () {
-      $(".refresh_message span").html("Refresh required");
-
-      const taskp = (str) => {
-        if (str == "high") {
-          return 1;
-        } else if (str == "medium") {
-          return 0;
-        } else {
-          return -1;
-        }
-      };
-
-      const Task = {
-        taskName: $("#task_name").val(),
-        description: $(".task_desc_inp").val(),
-        priority: taskp($(".task_priority").val()),
-        date: $(".datepicker").val(),
-        module: name,
-      };
-
-      if (Object.values(Task).includes("")) {
-        $(".status_message")
-          .html(
-            `Enter information into all required fields : <ul class="required_fields"></ul>`
-          )
-          .css({ color: "red" });
-        for (let i = 0; i <= 4; i++) {
-          if (Object.values(Task)[i] == "") {
-            const niceDisplay = {
-              taskName: "Task Name",
-              description: "Task Description",
-              priority: "Task Priority",
-              date: "Deadline",
-            };
-
-            $(".required_fields").append(
-              `<li>${niceDisplay[Object.keys(Task)[i]]}</li>`
-            );
-          }
-        }
-      } else {
-        $("#task_name, .task_desc_inp, .datepicker").val("");
-        $(".datepicker").flatpickr(defaultState);
-
-        //Updating the status message
-
-        //Create json object
-        const taskJSONObject = JSON.stringify(Task);
-        console.log(taskJSONObject);
-        const postOptions = {
-          method: "POST",
-          body: taskJSONObject,
-          dataType: "json",
-          headers: {
-            Accept: "application/json;charset=utf-8",
-            "Content-Type": "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-          },
-        };
-
-        fetch("/", postOptions)
-          .then((res) => {
-            if (res.status == "200") {
-              $(".status_message")
-                .html(`Task added: <b>${Task.taskName}</b>`)
-                .css({ color: "black" });
-              $(".character_count").html(" ");
-            } else if (res.status == "404") {
-              $(".status_message").html(`Not Found Error: Please Try Again`);
-            }
-          })
-          .catch(console.error);
-      }
-    });
 
     //Refresh GET requests
     const htmlTaskTemplate = (object) => {
@@ -481,7 +478,7 @@ $(document).ready(function () {
 
       <div class="delete_task_section">
         <button class="delete_task" name="${object._id}"><img src="./assets/icons/delete.svg"/></button>
-        <button class="edit_task" name="${object._id}"><img src="./assets/icons/edit.svg"/></button>
+        <button class="edit_task" data-target="${object.module}" name="${object._id}"><img src="./assets/icons/edit.svg"/></button>
       </div>
   </div>
 
@@ -505,10 +502,10 @@ $(document).ready(function () {
         a.priority < b.priority
           ? 1
           : a.priority === b.priority
-          ? a.date > b.date
-            ? 1
+            ? a.date > b.date
+              ? 1
+              : -1
             : -1
-          : -1
       );
       for (let i = 0; i < data.length; i++) {
         if (!displayMap.has([data[i]["_id"]])) {
@@ -520,22 +517,92 @@ $(document).ready(function () {
       }
     }
   });
-  
-  
-  $('.swiper-wrapper').on('click', '.edit_task', function(){
+
+  $(".swiper-wrapper").on("click", ".edit_task", function () {
     const id = $(this).attr("name");
+    const module = $(this).attr("data-target");
+    console.log(module);
+
     const taskWrapper = `.task_wrapper_${id}`;
     const taskName = $(`${taskWrapper} .task_name_wrap`).html().trim();
-    const priority = priorityDecoder($(`${taskWrapper} .priority_indicator`).css("background-color"));
+    const priority = taskp(priorityDecoder(
+      $(`${taskWrapper} .priority_indicator`).css("background-color")
+    ));
+    console.log(priority);
     const taskDesc = $(`${taskWrapper} .task_description`).html().trim();
     const date = $(`${taskWrapper} .countdown_timer_${id}`).attr("date");
+    console.log(date);
     //console.log(`taskName, ${taskName}, priority  ${priority},   ${taskDesc}`);
     //console.log($(`${taskWrapper} .priority_indicator`).css("background-color"));
-    showAddSection(true, {
-      "taskName": taskName,
-      "taskDesc": taskDesc,
-      "priority": priority,
-      "date": date
+    const taskObject = { taskName: taskName, description: taskDesc, priority: priority, date: date };
+    let optionsObject = taskObject;
+    optionsObject['id'] = id;
+    showAddSection(true, optionsObject);
+
+    const previousState = null;
+
+    $('.done').click(function () {
+      //const id = $('.full_screen_overlay').attr("data-target");
+
+      const updatedTaskName = $(`#task_name`).val().trim();
+      const updatedPriority = taskp($('.task_priority').val());
+      const updatedTaskDesc = $(`.task_desc_inp`).val().trim();
+      const updatedDate = $('.datepicker').val();
+
+      const newTask = { taskName: updatedTaskName, description: updatedTaskDesc, priority: updatedPriority, date: updatedDate };
+      const changesList = () => {
+        let cl = [];
+        for (let i = 0; i < recursiveDiff.getDiff(taskObject, newTask).length; i++) {
+          cl.push(recursiveDiff.getDiff(taskObject, newTask)[i]);
+        }
+        return cl;
+      }
+
+      const cl = changesList();
+      console.log(cl);
+
+
+      function changes() {
+        if (cl.length >= 1) {
+          return true;
+        }
+        return false;
+      }
+
+
+      if (changes()) {
+        //console.log("here");
+        const bodyOfRequest = {};
+        let properties = [];
+        for (let i = 0; i < cl.length; ++i) {
+          properties.push(cl[i].path[0]);
+          bodyOfRequest[cl[i].path[0]] = newTask[cl[i].path[0]];
+        }
+
+        //console.log(bodyOfRequest);
+        console.log(properties);
+        bodyOfRequest['properties'] = properties;
+        bodyOfRequest['module'] = module;
+        bodyOfRequest['id'] = id;
+
+        fetch('/update', {
+          method: "POST",
+          body: JSON.stringify(bodyOfRequest),
+          dataType: "json",
+          headers: {
+            Accept: "application/json;charset=utf-8",
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          }
+        }).then((res) => {
+          if (res.status === 200) {
+            $('.status_message').html(`Saved task : <b>${updatedTaskName}</b>`);
+          }
+        });
+
+      }
+
+
     });
   });
 });

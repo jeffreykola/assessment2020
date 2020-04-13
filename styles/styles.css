@@ -391,7 +391,7 @@ header {
       background-color: #eeeeee;
       border-radius: 36px; }
     .full_overlay_container .edit_task_section textarea {
-      padding-top: 0.5em; }
+      padding-top: 1em; }
     .full_overlay_container .edit_task_section textarea,
     .full_overlay_container .edit_task_section input,
     .full_overlay_container .edit_task_section select {

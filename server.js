@@ -173,28 +173,33 @@ app.post('/update', function(req, res){
   const database = new Datastore(`./db_files/${module}_tasks.db`);
   const id = req.body.id;
   database.loadDatabase();
-  let propertyName
-        =updatedValue
-        = "";
 
-        
+  //console.log(req.body.properties);
+
   const getPropVal = (propertyName) =>{ 
-    return Array((propertyName, req.body[`${propertyName}`] ? req.body[`${propertyName}`] != "" : ""));
-  }
-
-  for(let i = 0; i < req.body.properties; ++i){
-    if(req.body.properties[i] != ""){
-      const propertyData = getPropVal(req.body.properties[i]);
-      [propertyName, pData] = propertyData;
-      database.update({_id: req.body._id}, {propertyName: pData}, {}, function(err, numReplaced){
-        if(numReplaced){
-          res.status(200);
-        }else{
-          res.send(err).status(500);
-        }
-      });
+    if(req.body[`${propertyName}`] != ""){
+      return Array(propertyName, req.body[`${propertyName}`]);
+    }else{
+      return false;
     }
   }
+  //console.log(getPropVal(req.body.properties));
+  console.log(req.body.properties);
+  for(let i = 0; i < req.body.properties.length; ++i){
+      const propertyData = getPropVal(req.body.properties[i]);
+
+     [name, pData] = propertyData;
+     let updateQuery = {};
+     updateQuery[`${name}`] = pData;
+      database.update({_id: id}, { $set : updateQuery } , {}, function(err, numReplaced){
+        if(numReplaced){
+        }else{
+          res.status(500);
+          return;
+        }
+      })
+  }
+  res.sendStatus(200);
 
 });
 
