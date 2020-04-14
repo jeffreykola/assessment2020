@@ -108,7 +108,9 @@ app.post("/", function (req, res) {
   console.log(data.taskName)
   data.description = escape(data.description);
   database.insert(data, function (err) {
-    res.status(500).json({ error: err });
+    if (err){
+      res.status(500).json({ error: err })
+    }
   });
   res.sendStatus(200);
 });
@@ -131,6 +133,7 @@ app.post("/delete", function (req, res) {
   var database = new Datastore(`./db_files/${name}_tasks.db`);
   database.loadDatabase();
   if (name && id) {
+    console.log(id);
     database.remove({ _id: id }, {}, function (err, numRemoved) {
       if (numRemoved) {
         res.sendStatus(200);
@@ -177,29 +180,33 @@ app.post('/update', function(req, res){
   //console.log(req.body.properties);
 
   const getPropVal = (propertyName) =>{ 
-    if(req.body[`${propertyName}`] != ""){
+    if(req.body[`${propertyName}`] || req.body[`${propertyName}`] === 0){
       return Array(propertyName, req.body[`${propertyName}`]);
     }else{
       return false;
     }
   }
   //console.log(getPropVal(req.body.properties));
-  console.log(req.body.properties);
-  for(let i = 0; i < req.body.properties.length; ++i){
-      const propertyData = getPropVal(req.body.properties[i]);
+  if(req.body.properties.length >= 1){
+    for(let i = 0; i < req.body.properties.length; ++i){
+        const propertyData = getPropVal(req.body.properties[i]);
 
-     [name, pData] = propertyData;
-     let updateQuery = {};
-     updateQuery[`${name}`] = pData;
-      database.update({_id: id}, { $set : updateQuery } , {}, function(err, numReplaced){
-        if(numReplaced){
-        }else{
-          res.status(500);
-          return;
-        }
-      })
+
+      [name, pData] = propertyData;
+      let updateQuery = {};
+      updateQuery[`${name}`] = pData;
+        database.update({_id: id}, { $set : updateQuery } , {}, function(err, numReplaced){
+          if(numReplaced){
+          }else{
+            res.status(500);
+            return;
+          }
+        })
+    }
+    res.sendStatus(200);
+  }else{
+    res.sendStatus(500);
   }
-  res.sendStatus(200);
 
 });
 

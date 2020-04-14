@@ -11,6 +11,12 @@ body {
 *:focus {
   border: none; }
 
+span a {
+  color: blue;
+  text-decoration: none; }
+  span a::after {
+    color: black; }
+
 .action_tray_show {
   display: -webkit-box !important;
   display: flex !important;
@@ -35,10 +41,10 @@ header {
   grid-column-gap: 0.2em;
   font-size: 16px;
   background: #f3f3f3; }
-  @media screen and (min-width: 376px) and (max-width: 800px) {
+  @media screen and (min-width: 376px) and (max-width: 900px) {
     header {
       font-size: 18px; } }
-  @media screen and (min-width: 800px) {
+  @media screen and (min-width: 900px) {
     header {
       font-size: 24px; } }
   header div {
@@ -83,10 +89,10 @@ header {
       border-radius: 36px;
       margin-right: 0.5em;
       font-size: 16px; }
-      @media screen and (min-width: 376px) and (max-width: 800px) {
+      @media screen and (min-width: 376px) and (max-width: 900px) {
         .active_display .module_selection_section .action_tray input {
           font-size: 24px; } }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         .active_display .module_selection_section .action_tray input {
           font-size: 26px; } }
     .active_display .module_selection_section .action_tray button {
@@ -103,11 +109,11 @@ header {
       .active_display .module_selection_section .action_tray button img {
         height: 1.5em;
         width: 1.5em; }
-        @media screen and (min-width: 376px) and (max-width: 800px) {
+        @media screen and (min-width: 376px) and (max-width: 900px) {
           .active_display .module_selection_section .action_tray button img {
             height: 2em;
             width: 2em; } }
-        @media screen and (min-width: 800px) {
+        @media screen and (min-width: 900px) {
           .active_display .module_selection_section .action_tray button img {
             height: 2.5em;
             width: 2.5em; } }
@@ -126,7 +132,7 @@ header {
   height: 80vh; }
   .active_display .module_selection .module_action_tray {
     display: none; }
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 900px) {
       .active_display .module_selection .module_action_tray {
         display: -webkit-box;
         display: flex; } }
@@ -141,10 +147,10 @@ header {
       border-radius: 36px;
       margin-right: 0.5em;
       font-size: 16px; }
-      @media screen and (min-width: 376px) and (max-width: 800px) {
+      @media screen and (min-width: 376px) and (max-width: 900px) {
         .active_display .module_selection .module_action_tray input {
           font-size: 24px; } }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         .active_display .module_selection .module_action_tray input {
           font-size: 26px; } }
     .active_display .module_selection .module_action_tray .update_button {
@@ -155,7 +161,7 @@ header {
     .active_display .module_selection .module_action_tray img {
       height: 1em;
       width: 1em; }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         .active_display .module_selection .module_action_tray img {
           height: 2em;
           width: 2em; } }
@@ -169,7 +175,7 @@ header {
     width: 70%;
     -webkit-box-pack: end;
     justify-content: flex-end; }
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 900px) {
       .active_display .module_selection .module_name {
         grid-template-columns: 0.7fr 0.5fr; } }
     .active_display .module_selection .module_name .sub {
@@ -181,11 +187,11 @@ header {
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
       width: 100%;
       border-radius: 36px; }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         .active_display .module_selection .module_name .sub {
           font-size: 24px;
           padding: 1em; } }
-      @media screen and (min-width: 376px) and (max-width: 800px) {
+      @media screen and (min-width: 376px) and (max-width: 900px) {
         .active_display .module_selection .module_name .sub {
           font-size: 20px; } }
     .active_display .module_selection .module_name .delete_button,
@@ -202,7 +208,7 @@ header {
       .active_display .module_selection .module_name .edit_button img {
         height: 1.5em;
         width: 1.5em; }
-        @media screen and (min-width: 800px) {
+        @media screen and (min-width: 900px) {
           .active_display .module_selection .module_name .delete_button img,
           .active_display .module_selection .module_name .edit_button img {
             height: 2em;
@@ -212,7 +218,7 @@ header {
     width: 1em;
     margin-bottom: auto;
     margin-top: auto; }
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 900px) {
       .active_display .module_selection .view_options {
         display: none; } }
 
@@ -222,7 +228,7 @@ header {
   grid-template-rows: 0.1fr 2fr 0.1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px; }
-  @media screen and (min-width: 800px) {
+  @media screen and (min-width: 900px) {
     .view_tasks_section {
       grid-row-gap: 4em; } }
   .view_tasks_section .refresh_status {
@@ -234,10 +240,10 @@ header {
     .view_tasks_section .refresh_status .status_message {
       color: black;
       font-size: 16px; }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         .view_tasks_section .refresh_status .status_message {
           font-size: 32px; } }
-      @media screen and (min-width: 376px) and (max-width: 800px) {
+      @media screen and (min-width: 376px) and (max-width: 900px) {
         .view_tasks_section .refresh_status .status_message {
           font-size: 24px; } }
     .view_tasks_section .refresh_status .icon {
@@ -248,11 +254,14 @@ header {
   .view_tasks_section .swiper-wrapper {
     width: 100vw;
     padding: 1em; }
+    @media screen and (max-width: 400px) {
+      .view_tasks_section .swiper-wrapper {
+        padding: 0.5em; } }
     .view_tasks_section .swiper-wrapper .task_wrapper {
       padding: 1em;
       margin-top: 10em;
       height: 50vh;
-      width: 80vw;
+      width: 85vw;
       border-radius: 5%;
       display: grid;
       grid-template-columns: 1fr;
@@ -260,12 +269,15 @@ header {
       grid-column-gap: 0px;
       grid-row-gap: 0.5em;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13); }
-      @media screen and (min-width: 800px) {
+      @media (orientation: landscape) {
+        .view_tasks_section .swiper-wrapper .task_wrapper {
+          height: 80vh; } }
+      @media screen and (min-width: 820px) {
         .view_tasks_section .swiper-wrapper .task_wrapper {
           width: 25vw;
           margin-top: auto;
           margin-bottom: auto; } }
-      @media screen and (min-width: 600px) and (max-width: 800px) {
+      @media screen and (min-width: 600px) and (max-width: 900px) {
         .view_tasks_section .swiper-wrapper .task_wrapper {
           width: 40vw; } }
       .view_tasks_section .swiper-wrapper .task_wrapper .top_task_section {
@@ -314,7 +326,10 @@ header {
           right: 0; }
         .view_tasks_section .swiper-wrapper .task_wrapper .delete_task_section .edit_task {
           position: relative;
-          left: 65%; }
+          left: 60%; }
+          @media screen and (max-width: 400px) {
+            .view_tasks_section .swiper-wrapper .task_wrapper .delete_task_section .edit_task {
+              left: 70%; } }
 
 .full_overlay_container {
   display: grid;
@@ -336,10 +351,10 @@ header {
         padding-left: 1em;
         font-size: 16px;
         color: red; }
-        @media screen and (min-width: 800px) {
+        @media screen and (min-width: 900px) {
           .full_overlay_container .cancel_navigation_section .status_updates_wrapper .status_message {
             font-size: 32px; } }
-        @media screen and (min-width: 376px) and (max-width: 800px) {
+        @media screen and (min-width: 376px) and (max-width: 900px) {
           .full_overlay_container .cancel_navigation_section .status_updates_wrapper .status_message {
             font-size: 24px; } }
     .full_overlay_container .cancel_navigation_section button {
@@ -366,10 +381,10 @@ header {
     grid-row-gap: 0px;
     height: auto;
     margin: 1em; }
-    @media screen and (min-width: 375px) and (max-width: 800px) {
+    @media screen and (min-width: 375px) and (max-width: 900px) {
       .full_overlay_container .edit_task_section {
         margin: 2em; } }
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 900px) {
       .full_overlay_container .edit_task_section {
         margin-left: auto;
         margin-right: auto; } }
@@ -397,7 +412,7 @@ header {
     .full_overlay_container .edit_task_section select {
       border: none;
       padding-left: 1em; }
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 900px) {
       .full_overlay_container .edit_task_section {
         width: 70%; } }
     .full_overlay_container .edit_task_section select {
@@ -449,7 +464,7 @@ footer {
       font-size: 16px;
       border: 1px solid black;
       color: black; }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 900px) {
         footer .save_section button {
           font-size: 24px; } }
   footer .add_item_wrapper {
@@ -470,3 +485,15 @@ footer {
         width: 3em;
         border: none;
         padding: none; }
+
+.w3-animate-right {
+  position: relative;
+  animation: animateright 0.4s; }
+
+@keyframes animateright {
+  from {
+    right: -300px;
+    opacity: 0; }
+  to {
+    right: 0;
+    opacity: 1; } }

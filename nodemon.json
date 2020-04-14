@@ -1,9 +1,9 @@
 {
   "watch": [
     "server.js",
-    "./db_files",
-    "./index.html"
+    "./index.html",
+    "./db_files/"
   ],
-  "ext": "js,db,html"
+  "ext": "js,html,db"
 }
 
