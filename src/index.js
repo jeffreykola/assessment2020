@@ -2,11 +2,15 @@
 $(document).ready(function () {
   $(".status_message").html(`<b>MODULE</b> MANAGER`);
 
-  $("body").on("click", "#reload", function () {
-    window.location.reload(true);
-    return false;
-  });
 
+  var displayMap = new Map();
+
+  
+  $(".close_button").click(function () {
+    showTaskSection();
+    $(".status_message").html(name).css({ color: "black" });
+  });
+  
   const priorityDecoder = (color) => {
     if (color === "#ff0000" || color.trim() === "rgb(255, 0, 0)") {
       return "high";
@@ -27,6 +31,21 @@ $(document).ready(function () {
     }
   };
 
+  let mySwiper = new Swiper(".swiper-container", {
+    slidesPerView: 1,
+    spaceBetween: 5,
+    breakpoints: {
+      900: {
+        slidesPerView: 3,
+      },
+      // when window width is >= 480px
+      600: {
+        slidesPerView: 2,
+      },
+      // when window width is >= 640px
+    },
+  });
+
   $(".add_button").click(function () {
     showAddSection();
     let name = $(".status_message").html();
@@ -37,13 +56,13 @@ $(document).ready(function () {
   const templateButton = (name) => {
     return `<div class="module_name ${name}_wrapper">
     <button class="sub module_${name}">${name.split("_").join(" ")}</button>
-    <img class="view_options" name="${name}" src="./assets/icons/options.svg"/>
+    <img alt="view-icon" class="view_options" name="${name}" src="./assets/icons/options.svg"/>
     <div class="module_action_tray action_tray_${name} w3-animate-right">
       <button name="${name}" class="delete_button">
-        <img src="./assets/icons/delete.svg"/>
+        <img alt="delete-icon" src="./assets/icons/delete.svg"/>
       </button>
       <button name=${name} class="edit_button">
-        <img src="./assets/icons/edit.svg"/>
+        <img alt="edit-icon" src="./assets/icons/edit.svg"/>
       </button>
     </div>
   </div>`;
@@ -52,6 +71,8 @@ $(document).ready(function () {
   function showTaskSection() {
     $(".full_overlay_container").css({ display: "none" });
     $(".view_tasks_section, .add_item_wrapper").removeAttr("style");
+    $('.done').css({display:"unset"});
+    $('.save_edit').hide();
   }
 
   function showAddSection(defaults = false, options) {
@@ -83,7 +104,6 @@ $(document).ready(function () {
     $(".status_message").html(`<b>MODULE</b> MANAGER`);
     $(".view_tasks_section, .add_item_wrapper").css({ display: "none" });
     $(".module_selection_section, header").removeAttr("style");
-    window.location = window.location;
   }
 
   $(".back_button").click(function () {
@@ -96,8 +116,6 @@ $(document).ready(function () {
     if ($(window).width() <= 800) {
       $(`.${name}_wrapper`).toggleClass("change_grid_display");
     }
-
-    //$(`.action_tray_${name}`).animate({display:"flex"});
 
     $(`.module_${name}`).toggleClass("hide");
 
@@ -116,7 +134,7 @@ $(document).ready(function () {
     $(`.module_selection`).on(
       "click",
       `.action_tray_${name} .update_button`,
-      function () {
+      async function () {
         const updateValue = $(`.action_tray_${name} .update_name`).val().trim();
         if (
           updateValue === "" ||
@@ -126,7 +144,7 @@ $(document).ready(function () {
           $(`.action_tray_${name}`).html(previousState);
         } else {
           //$(`.action_tray_${name} .update_button`).removeAttr('disabled');
-          fetch("/updatemod", {
+          await fetch("/updatemod", {
             headers: {
               Accept: "application/json;charset=utf-8",
               "Content-Type": "application/json",
@@ -137,11 +155,14 @@ $(document).ready(function () {
               originalName: `${name.split("_").join(" ")}`,
               newFileName: `${updateValue}`,
             }),
+          }).then(async (res) => {
+            //const name = res;
+            await getSubjects();
+            console.log(getSubjects());
+            // $(".refresh_message span").html(
+            //   "<a id='reload' href='#'>Refresh required...</a>"
+            // );
           });
-
-          $(".refresh_message span").html(
-            "<a id='reload' href='#'>Refresh required...</a>"
-          );
         }
       }
     );
@@ -149,7 +170,6 @@ $(document).ready(function () {
 
   $(".module_selection").on("click", ".delete_button", function () {
     const name = $(this).attr("name");
-
     fetch("/dropmod", {
       headers: {
         Accept: "application/json;charset=utf-8",
@@ -158,21 +178,17 @@ $(document).ready(function () {
       dataType: "json",
       method: "POST",
       body: JSON.stringify({ name: `${name.split("_").join(" ")}` }),
-    }).then((res) => {
+    }).then(async (res) => {
       if (res.status === 200) {
-        $(`.${name}_wrapper`).empty();
-        $(".refresh_message span").html(
-          "<a id='reload' href='#'>Refresh required..</a>"
-        );
+        await getSubjects();
       } else {
-        $(".refresh_message span").html(
-          "<a id='reload' href='#'>There has been an error..</a>"
-        );
+        alert("There has been an error");
       }
     });
   });
 
   async function getSubjects() {
+    $('.module_selection').html(" ");
     const response = await fetch(`/subjects`, {
       headers: {
         Accept: "application/json;charset=utf-8",
@@ -182,9 +198,10 @@ $(document).ready(function () {
       method: "GET",
     });
     const data = await response.json();
-
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
-      if (data[i] != "./db_files/_tasks.db") {
+
+      if (data[i] != "./db_files/_tasks.db" && data[i] != "./db_files/~_tasks.db") {
         $(".module_selection").append(
           templateButton(
             data[i]
@@ -196,9 +213,6 @@ $(document).ready(function () {
           )
         );
       }
-      // console.log(
-      //   data[i].replace("./db_files/", "").replace("_tasks.db", "").trim()
-      // );
     }
   }
 
@@ -206,21 +220,25 @@ $(document).ready(function () {
 
   //SEARCHING SUBJECTS
   async function search(searchVal) {
-    const response = await fetch(`/search?search=${searchVal}`, {
-      headers: {
-        Accept: "application/json;charset=utf-8",
-        "Content-Type": "application/json",
-      },
-      dataType: "json",
-      method: "GET",
-    });
+    
+      const response = await fetch(`/search?search=${searchVal}`, {
+        headers: {
+          Accept: "application/json;charset=utf-8",
+          "Content-Type": "application/json",
+        },
+        dataType: "json",
+        method: "GET",
+      });
 
-    const data = await response.json();
-    if (data["status"] == "found" || $(".module_search").val().trim() === "") {
-      $(".add_button_mod").css({ display: "none" });
-    } else {
-      $(".add_button_mod").css({ display: "unset" });
-    }
+      const data = await response.json();
+      if (
+        data["status"] == "found" ||
+        $(".module_search").val().trim() === ""
+      ) {
+        $(".add_button_mod").css({ display: "none" });
+      } else {
+        $(".add_button_mod").css({ display: "unset" });
+      }
   }
 
   $(".module_search").keyup(function () {
@@ -229,40 +247,26 @@ $(document).ready(function () {
   });
 
   $(".add_button_mod").click(function () {
-    const searchValue = $(".module_search").val().trim();
-    fetch("/add", {
-      headers: {
-        Accept: "application/json;charset=utf-8",
-        "Content-Type": "application/json",
-      },
-      dataType: "json",
-      method: "POST",
-      body: JSON.stringify({ module: `${searchValue}` }),
-    }).then((res) => {
-      if (res.status === 200) {
-        $(".refresh_message span").html(
-          "<a id='reload' href='#'>Refresh required</a>"
-        );
-      } else if (res.status === 403) {
-        $(".refresh_message span").html("Maxmimum subjects reached");
-      }
-    });
+      const searchValue = $(".module_search").val().trim();
+      fetch("/add", {
+        headers: {
+          Accept: "application/json;charset=utf-8",
+          "Content-Type": "application/json",
+        },
+        dataType: "json",
+        method: "POST",
+        body: JSON.stringify({ module: `${searchValue}` }),
+      }).then(async (res) => {
+        if (res.status === 200) {
+          await getSubjects();
+        } else if (res.status === 403) {
+          $(".refresh_message span").html("Maxmimum subjects reached");
+        }
+      });
+   
   });
 
-  let mySwiper = new Swiper(".swiper-container", {
-    slidesPerView: 1,
-    spaceBetween: 5,
-    breakpoints: {
-      900: {
-        slidesPerView: 3,
-      },
-      // when window width is >= 480px
-      600: {
-        slidesPerView: 2,
-      },
-      // when window width is >= 640px
-    },
-  });
+
 
   const defaultState = {
     enableTime: true,
@@ -280,10 +284,8 @@ $(document).ready(function () {
     var name = $(this).text().trim();
     updateTasks(name);
     $(".add_button").click(function () {
-      $(".done").click(function () {
-        $(".refresh_message span").html(
-          "<a id='reload' href='#'>Refresh required</a>"
-        );
+      $(".done").unbind().click(function () {
+        console.log("here");
         //console.log(name);
         const Task = {
           taskName: $("#task_name").val().trim(),
@@ -330,30 +332,29 @@ $(document).ready(function () {
             headers: {
               Accept: "application/json;charset=utf-8",
               "Content-Type": "application/json",
-              "X-Requested-With": "XMLHttpRequest",
             },
           };
-
-          fetch("/", postOptions)
-            .then((res) => {
-              if (res.status == "200") {
-                $(".status_message")
-                  .html(`Task added: <b>${Task.taskName}</b>`)
-                  .css({ color: "black" });
-                $(".character_count").html(" ");
-              } else if (res.status == "404") {
-                $(".status_message").html(`Not Found Error: Please Try Again`);
-              }
-            })
-            .catch(console.error);
+            fetch("/", postOptions)
+              .then(async (res) => {
+                if (res.status == "200") {
+                  $(".status_message")
+                    .html(`Task added: <b>${Task.taskName}</b>`)
+                    .css({ color: "black" });
+                  $(".character_count").html(" ");
+                  await updateTasks(Task.module);
+                } else if (res.status == "404") {
+                  $(".status_message").html(
+                    `Not Found Error: Please Try Again`
+                  );
+                }
+              })
+              .catch(() => {
+                alert("The server has disconnected, please try again");
+              });
         }
       });
     });
 
-    $(".close_button").click(function () {
-      showTaskSection();
-      $(".status_message").html(name).css({ color: "black" });
-    });
 
     //Hide everything except the view task sectiona nd the add item wrapper
     $(".module_selection_section, .full_screen_overlay, header").css({
@@ -367,24 +368,20 @@ $(document).ready(function () {
     //if one chooses to delete a task
     $(".swiper-wrapper").on("click", ".delete_task", function (data) {
       const id = $(this).attr("name");
-      fetch(`/delete`, {
-        method: "POST",
-        body: JSON.stringify({ name: name, id: id }),
-        headers: {
-          Accept: "application/json;charset=utf-8",
-          "Content-Type": "application/json",
-        },
-        dataType: "json",
-      }).then((res) => {
-        $(`.task_wrapper_${id}`).parent().animate(
-          {
-            position: "relative",
-            top: "-100%",
-            display: "none",
+        fetch(`/delete`, {
+          method: "POST",
+          body: JSON.stringify({ name: name, id: id }),
+          headers: {
+            Accept: "application/json;charset=utf-8",
+            "Content-Type": "application/json",
           },
-          500
-        );
-      });
+          dataType: "json",
+        }).then((res) => {
+          if(res['status']==200){
+            displayMap.set(id,'deleted');
+            mySwiper.removeSlide(mySwiper.activeIndex);
+          }
+        });
     });
 
     //Go back to the homepage
@@ -485,52 +482,55 @@ $(document).ready(function () {
       </div>
 
       <div class="delete_task_section">
-        <button class="delete_task" name="${object._id}"><img src="./assets/icons/delete.svg"/></button>
-        <button class="edit_task" data-target="${object.module}" name="${object._id}"><img src="./assets/icons/edit.svg"/></button>
+        <button class="delete_task" name="${object._id}"><img alt="delete-svg" src="./assets/icons/delete.svg"/></button>
+        <button class="edit_task" data-target="${object.module}" name="${object._id}"><img alt="edit-icon" src="./assets/icons/edit.svg"/></button>
       </div>
       </div>
 
         </div>`;
     };
 
-    var displayMap = new Map();
+    
     async function updateTasks(name) {
-      const response = await fetch(`/data?id=${name}`, {
-        headers: {
-          Accept: "application/json;charset=utf-8",
-          "Content-Type": "application/json",
-        },
-        dataType: "json",
-        method: "GET",
-      });
-      const data = await response.json();
-      //console.log(data);
-      //Showing tasks in order of their priority and then in order of their deadlines
-      data.sort((a, b) =>
-        a.priority < b.priority
-          ? 1
-          : a.priority === b.priority
-          ? a.date > b.date
+      mySwiper.removeAllSlides();
+
+        const response = await fetch(`/data?id=${name}`, {
+          headers: {
+            Accept: "application/json;charset=utf-8",
+            "Content-Type": "application/json",
+          },
+          dataType: "json",
+          method: "GET",
+        });
+        const data = await response.json();
+
+        //console.log(data);
+        //Showing tasks in order of their priority and then in order of their deadlines
+        data.sort((a, b) =>
+          a.priority < b.priority
             ? 1
+            : a.priority === b.priority
+            ? a.date > b.date
+              ? 1
+              : -1
             : -1
-          : -1
-      );
-      for (let i = 0; i < data.length; i++) {
-        if (!displayMap.has([data[i]["_id"]])) {
-          mySwiper.appendSlide(htmlTaskTemplate(data[i]));
-          displayMap.set(data[i]["_id"], "displayed");
-        } else {
-          return;
+        );
+
+        for (let i = 0; i < data.length; i++) {
+        //   if (displayMap.has(data[i]["_id"])) {
+        //   } else {
+            mySwiper.appendSlide(htmlTaskTemplate(data[i]));
+            //displayMap.set(data[i]["_id"], "displayed");
+        //   }
         }
-      }
     }
 
     $(".swiper-wrapper").on("click", `.edit_task`, function () {
       let id = (module = taskWrapper = taskName = priority = taskDesc = date = taskObject = null);
-
       id = $(this).attr("name");
-      module = $(this).attr("data-target");
-      //console.log(module);
+      console.log(id);
+       module = $('.refresh_status span').text();
+      console.log(module);
       taskWrapper = `.task_wrapper_${id}`;
       taskName = $(`${taskWrapper} .task_name_wrap`).html().trim();
       priority = taskp(
@@ -556,15 +556,19 @@ $(document).ready(function () {
         $(`${taskWrapper} .priority_indicator`).css("background-color")
       );
       showAddSection(true, optionsObject);
-      $(".done").attr("name", `button_${id}`);
+
+      $(".done").css({"display":"none"});
+      $('.save_edit').show();
       //console.log(id);
-      $(`button[name="button_${id}"]`).click(function () {
+      $(`.save_edit`).unbind().click(function () {
+        console.log("one ime");
         const actid = $(".full_overlay_container").attr("data-target");
 
         const updatedTaskName = $(`#task_name`).val().trim();
         const updatedPriority = taskp($(".task_priority").val());
         const updatedTaskDesc = $(`.task_desc_inp`).val().trim();
         const updatedDate = $(".datepicker").val();
+        console.log(updatedTaskName);
 
         const newTask = {
           taskName: updatedTaskName,
@@ -600,7 +604,7 @@ $(document).ready(function () {
           for (let i = 0; i <= cl.length - 1; ++i) {
             //console.log(i);
             properties.push(cl[i].path[0]);
-            //console.log(newTask[cl[i].path[i]]);
+
             bodyOfRequest[cl[i].path[0]] = newTask[cl[i].path[0]];
           }
 
@@ -609,29 +613,27 @@ $(document).ready(function () {
           bodyOfRequest["properties"] = properties;
           bodyOfRequest["module"] = module;
           bodyOfRequest["id"] = id;
-          //console.log(bodyOfRequest);
+          console.log(bodyOfRequest);
 
-          fetch("/update", {
-            method: "POST",
-            body: JSON.stringify(bodyOfRequest),
-            dataType: "json",
-            headers: {
-              Accept: "application/json;charset=utf-8",
-              "Content-Type": "application/json",
-              "X-Requested-With": "XMLHttpRequest",
-            },
-          }).then((res) => {
-            if (res.status === 200) {
-              $(".status_message").html(
-                `Saved task : <b>${updatedTaskName}</b>`
-              );
-              $(".refresh_message span").html(
-                `<a id='reload' href="#>"Refresh required</a>`
-              );
-            } else {
-              showTaskSection();
-            }
-          });
+            fetch("/update", {
+              method: "POST",
+              body: JSON.stringify(bodyOfRequest),
+              dataType: "json",
+              headers: {
+                Accept: "application/json;charset=utf-8",
+                "Content-Type": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+              },
+            }).then(async (res) => {
+              if (res.status === 200) {
+                $(".status_message").html(
+                  `Saved task : <b>${updatedTaskName}</b>`
+                );
+                await updateTasks(module);
+              } else {
+                //showTaskSection();
+              }
+           });
         }
       });
     });

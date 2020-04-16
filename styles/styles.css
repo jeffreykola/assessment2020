@@ -269,14 +269,15 @@ header {
       grid-column-gap: 0px;
       grid-row-gap: 0.5em;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13); }
-      @media (orientation: landscape) {
+      @media screen and (orientation: landscape) {
         .view_tasks_section .swiper-wrapper .task_wrapper {
           height: 80vh; } }
       @media screen and (min-width: 820px) {
         .view_tasks_section .swiper-wrapper .task_wrapper {
           width: 25vw;
           margin-top: auto;
-          margin-bottom: auto; } }
+          margin-bottom: auto;
+          height: 50vh; } }
       @media screen and (min-width: 600px) and (max-width: 900px) {
         .view_tasks_section .swiper-wrapper .task_wrapper {
           width: 40vw; } }

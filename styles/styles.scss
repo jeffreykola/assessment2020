@@ -340,7 +340,7 @@ header {
       padding: 1em;
       margin-top: 10em;
       height: 50vh;
-      @media (orientation:landscape){
+      @media screen and (orientation:landscape){
         height:80vh;
       }
       width: 85vw;
@@ -348,6 +348,7 @@ header {
         width: 25vw;
         margin-top: auto;
         margin-bottom: auto;
+        height:50vh;
       }
 
       @media screen and (min-width: 600px) and (max-width: 900px) {

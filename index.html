@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Programming Assessment</title>
-    <link rel="shortcut icon" href="./assets/icons/favicon.ico" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="./assets/icons/favicon.ico"
+      type="image/x-icon"
+    />
     <link
       href="https://fonts.googleapis.com/css?family=Inter&display=swap"
       rel="stylesheet"
@@ -14,6 +18,12 @@
       integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+    <script src="./datetime-polyfill/datetime-local-polyfill.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="./datetime-polyfill/datetime-local-polyfill.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" type="text/css" href="styles/styles.css" />
 
@@ -25,7 +35,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
-    <script type="text/javascript" src="https://unpkg.com/recursive-diff@1.0.0/dist/recursive-diff.min.js"></script>
+    <script src="https://unpkg.com/recursive-diff@1.0.0/dist/recursive-diff.min.js"></script>
   </head>
 
   <body>
@@ -47,7 +57,7 @@
               type="text"
             />
             <button class="add_button_mod">
-              <img src="./assets/icons/add.svg" />
+              <img alt="add-icon" src="./assets/icons/add.svg" />
             </button>
           </div>
 
@@ -72,7 +82,7 @@
               <span class="status_message"></span>
             </div>
             <button class="close_button">
-              <img src="./assets/icons/close.svg" />
+              <img alt="close-icon" src="./assets/icons/close.svg" />
             </button>
           </div>
 
@@ -106,6 +116,7 @@
           <div class="footer_bottom">
             <div class="done_button_wrapper save_task">
               <button class="done">Save Task</button>
+              <button style="display: none;" class="save_edit">Save Edit</button>
             </div>
           </div>
         </div>
@@ -115,14 +126,14 @@
         <!--View Tasks section-->
         <div style="display: none;" class="add_item_wrapper">
           <button class="back_button">
-            <img src="./assets/icons/back.svg" />
+            <img alt="back-icon" src="./assets/icons/back.svg" />
           </button>
           <button class="add_button">
-            <img src="./assets/icons/add.svg" />
+            <img alt="add-icon" src="./assets/icons/add.svg" />
           </button>
         </div>
       </footer>
     </div>
-    <script type="text/javascript" src="./src/index.js"></script>
+    <script src="./src/index.js"></script>
   </body>
 </html>

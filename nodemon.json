@@ -4,6 +4,6 @@
     "./index.html",
     "./db_files/"
   ],
-  "ext": "js,html,db"
+  "ext": "js"
 }
 
