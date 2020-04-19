@@ -4,11 +4,9 @@ $(document).ready(function () {
 
 
   var displayMap = new Map();
-
   
   $(".close_button").click(function () {
     showTaskSection();
-    $(".status_message").html(name).css({ color: "black" });
   });
   
   const priorityDecoder = (color) => {
@@ -143,7 +141,6 @@ $(document).ready(function () {
         ) {
           $(`.action_tray_${name}`).html(previousState);
         } else {
-          //$(`.action_tray_${name} .update_button`).removeAttr('disabled');
           await fetch("/updatemod", {
             headers: {
               Accept: "application/json;charset=utf-8",
@@ -156,12 +153,10 @@ $(document).ready(function () {
               newFileName: `${updateValue}`,
             }),
           }).then(async (res) => {
-            //const name = res;
             await getSubjects();
-            console.log(getSubjects());
-            // $(".refresh_message span").html(
-            //   "<a id='reload' href='#'>Refresh required...</a>"
-            // );
+            //console.log(getSubjects());
+          }).catch((err)=>{
+            alert(`Unable to obtain response from server \n ${err}`);
           });
         }
       }
@@ -184,6 +179,8 @@ $(document).ready(function () {
       } else {
         alert("There has been an error");
       }
+    }).catch((err)=>{
+      alert(`Unable to obtain response from server \n ${err}`);
     });
   });
 
@@ -196,9 +193,12 @@ $(document).ready(function () {
       },
       dataType: "json",
       method: "GET",
+    }).catch((err)=>{
+      alert(`Unable to obtain response from server \n ${err}`);
     });
+
     const data = await response.json();
-    console.log(data);
+    //console.log(data);
     for (let i = 0; i < data.length; i++) {
 
       if (data[i] != "./db_files/_tasks.db" && data[i] != "./db_files/~_tasks.db") {
@@ -228,6 +228,8 @@ $(document).ready(function () {
         },
         dataType: "json",
         method: "GET",
+      }).catch((err)=>{
+        alert(`Unable to obtain response from server \n ${err}`);
       });
 
       const data = await response.json();
@@ -262,6 +264,8 @@ $(document).ready(function () {
         } else if (res.status === 403) {
           $(".refresh_message span").html("Maxmimum subjects reached");
         }
+      }).catch((err)=>{
+        alert(`Unable to obtain response from server \n ${err}`);
       });
    
   });
@@ -348,10 +352,14 @@ $(document).ready(function () {
                   );
                 }
               })
-              .catch(() => {
-                alert("The server has disconnected, please try again");
+              .catch((err) => {
+                  alert(`Unable to obtain response from server \n ${err}`);
               });
         }
+      });
+
+      $('.close_button').click(function(){
+        $(".status_message").html(name).css({ color: "black" });
       });
     });
 
@@ -381,7 +389,9 @@ $(document).ready(function () {
             displayMap.set(id,'deleted');
             mySwiper.removeSlide(mySwiper.activeIndex);
           }
-        });
+        }).catch((err)=>{
+          alert(`The server has disconnected, please try again... \n ${err}` );
+        })
     });
 
     //Go back to the homepage
@@ -422,9 +432,8 @@ $(document).ready(function () {
           backgroundColor = "#85ba6a";
           break;
         default:
-          $(".refresh_message span").html(
-            "There has been an error reload page...."
-          );
+            console.log("There has been an error, please refresh the page");
+
       }
       //https://www.w3schools.com/howto/howto_js_countdown.asp
       //Credit: w3 Schools
@@ -494,6 +503,8 @@ $(document).ready(function () {
     async function updateTasks(name) {
       mySwiper.removeAllSlides();
 
+      //$('.close_button').attr("disabled", "true");
+      
         const response = await fetch(`/data?id=${name}`, {
           headers: {
             Accept: "application/json;charset=utf-8",
@@ -501,8 +512,13 @@ $(document).ready(function () {
           },
           dataType: "json",
           method: "GET",
+        }).catch((err)=>{
+          console.log(err);
+          alert(`Unable to obtain response from server \n ${err}`);
         });
+        
         const data = await response.json();
+        console.log(data);
 
         //console.log(data);
         //Showing tasks in order of their priority and then in order of their deadlines
@@ -523,14 +539,21 @@ $(document).ready(function () {
             //displayMap.set(data[i]["_id"], "displayed");
         //   }
         }
+      //$('.close_button').removeAttr("disabled");
     }
 
     $(".swiper-wrapper").on("click", `.edit_task`, function () {
+
+      $('.close_button').click(function(){
+        //console.log("here");
+        $(".status_message").html(name).css({ color: "black" });
+      });
+
+      //$('.refresh_status').html("");
       let id = (module = taskWrapper = taskName = priority = taskDesc = date = taskObject = null);
       id = $(this).attr("name");
-      console.log(id);
-       module = $('.refresh_status span').text();
-      console.log(module);
+      //console.log(id);
+      module = name
       taskWrapper = `.task_wrapper_${id}`;
       taskName = $(`${taskWrapper} .task_name_wrap`).html().trim();
       priority = taskp(
@@ -561,14 +584,14 @@ $(document).ready(function () {
       $('.save_edit').show();
       //console.log(id);
       $(`.save_edit`).unbind().click(function () {
-        console.log("one ime");
+        $('button').attr("disabled", true);
         const actid = $(".full_overlay_container").attr("data-target");
 
         const updatedTaskName = $(`#task_name`).val().trim();
         const updatedPriority = taskp($(".task_priority").val());
         const updatedTaskDesc = $(`.task_desc_inp`).val().trim();
         const updatedDate = $(".datepicker").val();
-        console.log(updatedTaskName);
+        //console.log(updatedTaskName);
 
         const newTask = {
           taskName: updatedTaskName,
@@ -576,6 +599,7 @@ $(document).ready(function () {
           priority: updatedPriority,
           date: updatedDate,
         };
+        
         const changesList = () => {
           let cl = [];
           for (
@@ -605,7 +629,12 @@ $(document).ready(function () {
             //console.log(i);
             properties.push(cl[i].path[0]);
 
-            bodyOfRequest[cl[i].path[0]] = newTask[cl[i].path[0]];
+            if(newTask[cl[i].path[0]] != ""){
+              bodyOfRequest[cl[i].path[0]] = newTask[cl[i].path[0]];
+            }else{
+              
+            }
+            
           }
 
           //console.log(properties);
@@ -613,7 +642,7 @@ $(document).ready(function () {
           bodyOfRequest["properties"] = properties;
           bodyOfRequest["module"] = module;
           bodyOfRequest["id"] = id;
-          console.log(bodyOfRequest);
+          //console.log(bodyOfRequest);
 
             fetch("/update", {
               method: "POST",
@@ -623,17 +652,27 @@ $(document).ready(function () {
                 Accept: "application/json;charset=utf-8",
                 "Content-Type": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
-              },
-            }).then(async (res) => {
-              if (res.status === 200) {
-                $(".status_message").html(
-                  `Saved task : <b>${updatedTaskName}</b>`
-                );
-                await updateTasks(module);
-              } else {
-                //showTaskSection();
               }
-           });
+            }).then(async (res) => {
+              //console.log('here');
+              $(".status_message").html(
+                `Updating : <b>${taskName}</b>...`
+              );
+              setTimeout(function(){
+                if (res.status === 200) {
+                  $("button").removeAttr("disabled");
+                  $(".status_message").html(
+                    `Saved task : <b>${updatedTaskName}</b>`
+                  );
+                  updateTasks(module);
+                } else {
+                  //showTaskSection();
+                }
+              },5000);
+           }).catch((err)=>{
+            alert(`Unable to update the task \n ${err}`);
+          });
+
         }
       });
     });

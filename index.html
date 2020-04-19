@@ -89,18 +89,19 @@
           <div class="edit_task_section">
             <div class="task_name_wrapper">
               <p>Task name</p>
-              <input id="task_name" type="text" maxlength="20" />
+              <input required="required" id="task_name" type="text" maxlength="20" />
             </div>
 
             <div class="task_desc_wrapper">
               <p>Task Description</p>
-              <textarea class="task_desc_inp" maxlength="140"></textarea>
+              <textarea required="required" class="task_desc_inp" maxlength="140"></textarea>
               <span class="character_count"></span>
             </div>
 
             <div class="task_priority_wrapper">
               <p>Task priority</p>
-              <select class="task_priority">
+              <select required="required" class="task_priority">
+                <option value="" disabled selected>Select task priority..</option>
                 <option value="high">High</option>
                 <option value="medium">Medium</option>
                 <option value="low">Low</option>
@@ -109,7 +110,7 @@
 
             <div class="task_deadline_wrapper">
               <p>Deadline</p>
-              <input class="datepicker" type="datetime-local" />
+              <input required="required" class="datepicker" type="datetime-local" />
             </div>
           </div>
 

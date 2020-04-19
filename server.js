@@ -16,7 +16,7 @@ app.use(
   })
 )
 app.use(bodyParser.json())
-app.disable('etag');
+app.disable('etag')
 
 // Boolean function to check if a file exists
 function checkIfExists (filename) {
@@ -47,6 +47,7 @@ function deleteFile (filename) {
 function renameFile (filename, newfilename) {
   if (checkIfExists(filename)) {
     fs.renameSync(filename, newfilename)
+    return true
   } else {
     return false
   }
@@ -69,12 +70,9 @@ var getAllFilesFromFolder = function (dir) {
   return results
 }
 
-// GET REQUESTS
-
-
 // console.log(subjects)
 const MAX_FILES = 6
-// Get all modules
+// MODULE
 app.get('/subjects', function (req, res) {
   const subjects = getAllFilesFromFolder('./db_files')
   res.status(200).json(subjects)
@@ -91,6 +89,7 @@ app.get('/search', function (req, res) {
 
 // Get data for a specific subject
 // Individual details
+// TASK
 app.get('/data', function (req, res) {
   var database = new Datastore(`./db_files/${req.query.id}_tasks.db`)
   database.loadDatabase()
@@ -103,7 +102,7 @@ app.get('/data', function (req, res) {
 })
 
 // POST REQUESTS
-// Create a task
+// TASK
 app.post('/', function (req, res) {
   const data = req.body
   var database = new Datastore(`./db_files/${req.body.module}_tasks.db`)
@@ -119,6 +118,7 @@ app.post('/', function (req, res) {
 })
 
 // Add a module
+// MODULE
 app.post('/add', async function (req, res) {
   const subs = getAllFilesFromFolder('./db_files')
   console.log(`./db_files/${req.body.module}_tasks.db`)
@@ -127,26 +127,26 @@ app.post('/add', async function (req, res) {
     database.loadDatabase(function (err) {
       res.sendStatus(200)
       if (err) {
-        res.sendStatus(500)
+        res.sendStatus(403)
       }
     })
   }
 })
 
 // Delete a task
+// TASK
 app.post('/delete', function (req, res) {
   const id = req.body.id
   const name = req.body.name
   var database = new Datastore(`./db_files/${name}_tasks.db`)
   database.loadDatabase()
   if (name && id) {
-    console.log(id)
     database.remove({ _id: id }, {}, function (err, numRemoved) {
       if (numRemoved) {
         res.sendStatus(200)
       } else {
         console.log(err)
-        res.sendStatus(500)
+        res.sendStatus(404)
       }
     })
   } else {
@@ -155,6 +155,7 @@ app.post('/delete', function (req, res) {
 })
 
 // Delete a module
+// MODULE
 app.post('/dropmod', function (req, res) {
   const name = req.body.name
   const filename = `./db_files/${name}_tasks.db`
@@ -162,28 +163,37 @@ app.post('/dropmod', function (req, res) {
     deleteFile(filename)
     // Used to restart the database
     var database = new Datastore('./db_files/_tasks.db')
-    database.loadDatabase()
-    res.status(200).json({ name: '_tasks' })
+    database.loadDatabase(function (err) {
+      if (err) {
+        res.sendStatus(500)
+        return
+      }
+      res.status(200).json({ name: '_tasks' })
+    })
   } else {
     res.sendStatus(404)
   }
 })
 
 // UPDATE request
-
+// MODULE
 app.post('/updatemod', function (req, res) {
   const filename = `./db_files/${req.body.originalName}_tasks.db`
   const newFileName = `./db_files/${req.body.newFileName}_tasks.db`
-  renameFile(filename, newFileName)
-  res.status(200).json({"newFileName":req.body.newFileName});
+  if (renameFile(filename, newFileName)) {
+    res.status(200).json({ newFileName: req.body.newFileName })
+  } else {
+    res.sendStatus(404)
+  }
 })
 
-app.post('/update', function (req, res) {
+// TASK
+app.post('/update', async function (req, res) {
   const module = req.body.module
   const database = new Datastore(`./db_files/${module}_tasks.db`)
   const id = req.body.id
   database.loadDatabase()
-
+  // database.persistence.setAutocompactionInterval(5000);
   // console.log(req.body.properties);
 
   const getPropVal = (propertyName) => {
@@ -194,6 +204,7 @@ app.post('/update', function (req, res) {
     }
   }
   // console.log(getPropVal(req.body.properties));
+  let count = 0
   if (req.body.properties.length >= 1) {
     for (let i = 0; i < req.body.properties.length; ++i) {
       const propertyData = getPropVal(req.body.properties[i])
@@ -206,16 +217,24 @@ app.post('/update', function (req, res) {
         err,
         numReplaced
       ) {
+        console.log(numReplaced)
         if (numReplaced) {
-          res.sendStatus(200)
-        } else {
-          res.json({ error: err }).status(500)
+          count += 1
+          if (count === req.body.properties.length) {
+            console.log('here')
+            database.persistence.compactDatafile()
+          }
+        } else if (err) {
+          res.status(500).json({ error: err })
         }
       })
     }
+    res.sendStatus(200)
   } else {
     res.sendStatus(500)
   }
+
+  // await getUpdateTaks();
 })
 
 const server = app.listen(3000, () =>
