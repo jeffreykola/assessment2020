@@ -27,7 +27,7 @@
     "escape-html": "^1.0.3",
     "express": "^4.17.1",
     "nedb": "^1.8.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "serve-static": "^1.14.1",
     "supertest": "^4.0.2"
   }
